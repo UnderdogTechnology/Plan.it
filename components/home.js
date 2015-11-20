@@ -19,8 +19,7 @@ system.cmp.home = {
                 mutil.formGroup([
                     m('label', 'Selected Activity'),
                     m('div.form-control', {
-                        innerHTML: ctrl.output(),
-                        readonly: true
+                        innerHTML: ctrl.output()
                     })
                 ]),
                 mutil.formGroup([

@@ -250,6 +250,11 @@ body {
     width: 100%;
 }
 
+div.form-control {
+    vertical-align: top;
+    display: inline-block;
+}
+
 .btn, .btn-primary {
     background: #0BB287;
     border: 1px solid #148264;

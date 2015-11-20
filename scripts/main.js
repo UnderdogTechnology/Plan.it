@@ -11,7 +11,7 @@
         // MODELS
         'models/': ['categories'],
         // COMPONENTS
-        'components/': ['home', 'nav']
+        'components/': ['home', 'edit', 'nav']
     };
 
     var layout = function(title, nav, content, needsSearch) {
@@ -40,6 +40,11 @@
             url: '/',
             icon: 'fa fa-home fa-lg',
             component: cmp.home
+        }, {
+            name: 'Edit',
+            url: '/edit',
+            icon: 'fa fa-cog fa-lg',
+            component: cmp.edit
         }]);
     };
 
