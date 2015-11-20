@@ -1,0 +1,290 @@
+/****************
+*     HEADER    *
+*****************/
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    background: #F0592B;
+    border-bottom: 1px solid #B54132;
+    color: #fff;
+    text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.menu-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    padding: 14px;
+    color: #fff;
+    text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/****************
+*     CONTENT    *
+*****************/
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-size: 14px; */
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+.content {
+    position: fixed;
+    overflow-y: auto;
+    top: 46px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/****************
+*     MENU      *
+*****************/
+
+.menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    min-height: 400px;
+    left: -300px;
+    font-size: 17px !important;
+    width: 250px;
+    background: #fff;
+    border-right: 1px solid #B54132;
+    z-index: 9999;
+    transition: 300ms left;
+}
+
+.menu > ul {
+    margin-top: 45px;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #B54132;
+}
+
+.menu .profile {
+    padding: 7px;
+    color: #B54132;
+    overflow: hidden;
+}
+
+.menu .profile-pic {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+}
+
+.menu .profile-name {
+    float: right;
+}
+
+.menu .profile-name div {
+    float: left;
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu .profile-name i {
+    width: 25px;
+}
+
+.menu .logo {
+    position: absolute;
+    left: 65px;
+    bottom: 0;
+    width: 100px;
+}
+
+.menu .badge {
+    float: right;
+    margin: 0 10px;
+    background: #F0592B;
+}
+
+.menu > ul li a {
+    text-decoration:none;
+    position: relative;
+    display: block;
+    padding: 10px 0;
+    color: #F0592B;
+    cursor: pointer;
+}
+
+.menu li.active a {
+    color: #fff;
+    background: #F0592B;
+    text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
+}
+
+.menu li.active .badge {
+    color: #F0592B;
+    background: #fff;
+    /*text-shadow: -1px 0 #F0592B, 0 1px #F0592B, 1px 0 #F0592B, 0 -1px #F0592B;*/
+    text-shadow: none;
+}
+
+.menu .fa {
+    width: 60px;
+    text-align: center;
+}
+
+.menu-visible {
+    left: 0 !important;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+    /*background-color: rgba(0, 0, 0, .65);
+    background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\9;*/
+}
+
+
+/****************
+*     TOGGLE    *
+*****************/
+
+.tgl {
+    border-radius: 2px;
+    position: relative;
+    height: 25px;
+    width: 65px;
+    border: 1px solid #000;
+    color: #fff;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tgl label {
+    margin: 0 !important;
+}
+
+.tgl .tgl-btn {
+    font-weight: normal;
+    position: absolute;
+    left: -3px;
+    display: inline-block !important;
+    overflow: hidden;
+    color: #fff;
+    width: 150px !important;
+    -webkit-transition: left .5s, left .5s, -webkit-transform .5s;
+    transition: left .5s, left .5s, transform .5ss;
+}
+
+.tgl .tgl-btn div {
+    height: 25px;
+    width: 55px;
+    line-height: 25px;
+    text-align: center;
+    float: left;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+.tgl .tgl-btn .tgl-opt:first-child {
+    background: #0BB287;
+    border-color: #148264;
+}
+
+.tgl .tgl-btn .separator {
+    width: 10px;
+    background: #fff;
+}
+
+.tgl .tgl-btn .tgl-opt:nth-child(3) {
+    background: #F0592B;
+    border-color: #B54132;
+}
+
+.tgl .tgl-btn.tgl-off {
+    left: -58px;
+}
+
+.tgl .tgl-switch {
+    display: none;
+}
+
+/****************
+*     COMMON    *
+*****************/
+
+/****************
+*      FORM     *
+*****************/
+
+.center-form {
+    margin: 5% auto;
+    max-width: 500px;
+    padding: 5px 1.5em;
+}
+
+.center-form .pure-controls .btn-primary {
+    float: right;
+}
+
+.form-control {
+    width: 100%;
+}
+
+.btn, .btn-primary {
+    background: #0BB287;
+    border: 1px solid #148264;
+    color: #fff;
+    padding: .6em 1em;
+}
+
+.btn-primary {
+    color: #fff;
+    background: #F0592B;
+    border: 1px solid #B54132;
+}
+
+/****************
+*    H:520px;   *
+*****************/
+
+@media screen and (max-height: 520px) {
+    .menu .logo {
+        display: none;
+    }
+}
+/****************
+*    w:480px;   *
+*****************/
+
+@media screen and (min-width: 480px) {
+    .form-control {
+        width: 50%;
+    }
+    .center-form .pure-controls .btn-primary {
+        float: none;
+    }
+    .center-form .pure-controls .btn-primary,
+    .center-form .pure-controls .btn {
+        margin: 0 1em;
+    }
+}
