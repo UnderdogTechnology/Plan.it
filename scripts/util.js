@@ -11,12 +11,23 @@ var util = {
     update: function(srcObj, newObj, path, index) {
         index = index || 0;
         path = (typeof path) == 'string' ? path.split('.') : path;
-
-        if(!path ||index == path.length) {
+        
+        if(!path || index == path.length) {
             return newObj;
         }
         srcObj[path[index]] = this.update(srcObj[path[index]], newObj, path, ++index);
         return srcObj;
+    },
+    remove: function(obj, path, index) {
+        index = index || 0;
+        path = (typeof path) == 'string' ? path.split('.') : path;
+
+        if(!path || index == path.length - 1) {
+            delete obj[path[index]];
+            return obj;
+        }
+        obj[path[index]] = this.remove(obj[path[index]], path, ++index);
+        return obj;
     },
     extend: function(aObj, bObj) {
         for(var key in bObj)
@@ -59,6 +70,9 @@ var util = {
         },
         update: function(name, obj, path) {
             this.create(name, util.update(this.get(name), obj, path));
+        },
+        remove: function(name, path) {
+            this.create(name, util.remove(this.get(name), path));
         }
     },
     formatter: function(string, obj) {
@@ -110,7 +124,7 @@ mutil.c = {
  **/
 
 var eutil = {
-    prices: {
+    costs: {
         'Free': 1,
         'Cheap': 2,
         'Expensive': 3

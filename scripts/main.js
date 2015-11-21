@@ -11,7 +11,7 @@
         // MODELS
         'models/': ['categories'],
         // COMPONENTS
-        'components/': ['home', 'edit', 'nav']
+        'components/': ['home']
     };
 
     var layout = function(title, nav, content, needsSearch) {
@@ -23,11 +23,6 @@
             view: function(ctrl, args) {
                 return m('div.wrapper', [
                     m('h1.header', title),
-                    m.component(cmp.nav, {
-                        active: title,
-                        items: nav,
-                        menuVisible: ctrl.menuVisible
-                    }),
                     m('div.content', m.component(content))
                 ]);
             }
@@ -40,11 +35,6 @@
             url: '/',
             icon: 'fa fa-home fa-lg',
             component: cmp.home
-        }, {
-            name: 'Edit',
-            url: '/edit',
-            icon: 'fa fa-cog fa-lg',
-            component: cmp.edit
         }]);
     };
 

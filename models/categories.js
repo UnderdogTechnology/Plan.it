@@ -1,8 +1,5 @@
 system.model.categories = {
-    filter: m.prop({
-        price: m.prop(1),
-        players: m.prop(null)
-    }),
+    filter: m.prop(),
     selectedCategory: m.prop('Master'),
     applyFilter: function() {
         var category = this.get(true)[this.selectedCategory()],
@@ -11,11 +8,19 @@ system.model.categories = {
         return util.forEach(category, function(obj, key){
             var match = true;
 
-            if(match && filter.price() && filter.price() < obj.price) {
+            if(match && filter.name() && filter.name() != key) {
                 match = false;
             }
 
-            if(match && filter.players() && !(filter.players() >= obj.players.min && filter.players() <= obj.players.max)) {
+            if(match && filter.cost() && filter.cost() < obj.cost) {
+                match = false;
+            }
+
+            if(match && filter.players().min() && !(filter.players().min() >= obj.players.min && filter.players().min() <= obj.players.max)) {
+                match = false;
+            }
+
+            if(match && filter.players().max() && !(filter.players().max() >= obj.players.min && filter.players().max() <= obj.players.max)) {
                 match = false;
             }
 
@@ -40,6 +45,9 @@ system.model.categories = {
     },
     update: function(obj, path) {
         util.storage.update('categories', obj, path);
+    },
+    remove: function(path) {
+        util.storage.remove('categories', path);
     }
 };
 
@@ -47,42 +55,42 @@ system.model.categories = {
 util.storage.update('categories', {
     'Video Games': {
         'Lara Croft': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 4
             }
          },
         'Helldivers': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 4
             }
          },
         'Mario Party': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 4
             }
          },
         'Mario Cart': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 4
             }
          },
         'Battlefront': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 1,
                 max: 2
             }
          },
         'Rocket League': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 4
@@ -91,21 +99,21 @@ util.storage.update('categories', {
     },
     'Misc': {
         'Pool': {
-            price: 2,
+            cost: 2,
             players: {
                 min: 2,
                 max: 6
             }
          },
         'Legendary': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 5
             }
          },
         'Cards': {
-            price: 1,
+            cost: 1,
             players: {
                 min: 2,
                 max: 10

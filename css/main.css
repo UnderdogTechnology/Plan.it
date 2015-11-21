@@ -19,19 +19,6 @@
     font-size: 1.5em;
 }
 
-.menu-btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 20px;
-    padding: 14px;
-    color: #fff;
-    text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
-    cursor: pointer;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: transparent;
-}
-
 /****************
 *     CONTENT    *
 *****************/
@@ -52,116 +39,6 @@ body {
     right: 0;
     bottom: 0;
 }
-
-/****************
-*     MENU      *
-*****************/
-
-.menu {
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    min-height: 400px;
-    left: -300px;
-    font-size: 17px !important;
-    width: 250px;
-    background: #fff;
-    border-right: 1px solid #B54132;
-    z-index: 9999;
-    transition: 300ms left;
-}
-
-.menu > ul {
-    margin-top: 45px;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid #B54132;
-}
-
-.menu .profile {
-    padding: 7px;
-    color: #B54132;
-    overflow: hidden;
-}
-
-.menu .profile-pic {
-    height: 75px;
-    width: 75px;
-    border-radius: 50%;
-}
-
-.menu .profile-name {
-    float: right;
-}
-
-.menu .profile-name div {
-    float: left;
-    width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.menu .profile-name i {
-    width: 25px;
-}
-
-.menu .logo {
-    position: absolute;
-    left: 65px;
-    bottom: 0;
-    width: 100px;
-}
-
-.menu .badge {
-    float: right;
-    margin: 0 10px;
-    background: #F0592B;
-}
-
-.menu > ul li a {
-    text-decoration:none;
-    position: relative;
-    display: block;
-    padding: 10px 0;
-    color: #F0592B;
-    cursor: pointer;
-}
-
-.menu li.active a {
-    color: #fff;
-    background: #F0592B;
-    text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
-}
-
-.menu li.active .badge {
-    color: #F0592B;
-    background: #fff;
-    /*text-shadow: -1px 0 #F0592B, 0 1px #F0592B, 1px 0 #F0592B, 0 -1px #F0592B;*/
-    text-shadow: none;
-}
-
-.menu .fa {
-    width: 60px;
-    text-align: center;
-}
-
-.menu-visible {
-    left: 0 !important;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9998;
-    /*background-color: rgba(0, 0, 0, .65);
-    background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\9;*/
-}
-
 
 /****************
 *     TOGGLE    *
@@ -255,6 +132,10 @@ div.form-control {
     display: inline-block;
 }
 
+div.form-control > table {
+    width: 100%;
+}
+
 .btn, .btn-primary {
     background: #0BB287;
     border: 1px solid #148264;
@@ -284,7 +165,9 @@ div.form-control {
 @media screen and (min-width: 480px) {
     .form-control {
         width: 50%;
-    }
+    
+        /* float: right; */
+}
     .center-form .pure-controls .btn-primary {
         float: none;
     }
