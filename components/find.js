@@ -61,7 +61,7 @@ system.cmp.find = {
                     ]),
                     mutil.formGroup([
                         m('label', 'Min People'),
-                        m('input[type="text"].form-control', {
+                        m('input[type="number"].form-control', {
                             placeholder: 'Min People',
                             value: form.players().min(),
                             onchange: m.withAttr('value', form.players().min)
@@ -69,7 +69,7 @@ system.cmp.find = {
                     ]),
                     mutil.formGroup([
                         m('label', 'Max People'),
-                        m('input[type="text"].form-control', {
+                        m('input[type="number"].form-control', {
                             placeholder: 'Max People',
                             value: form.players().max(),
                             onchange: m.withAttr('value', form.players().max)
