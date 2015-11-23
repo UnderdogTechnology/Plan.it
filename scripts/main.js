@@ -11,7 +11,7 @@
         // MODELS
         'models/': ['categories'],
         // COMPONENTS
-        'components/': ['home']
+        'components/': ['home', 'find', 'results', 'edit']
     };
 
     var layout = function(title, nav, content, needsSearch) {
@@ -23,7 +23,7 @@
             view: function(ctrl, args) {
                 return m('div.wrapper', [
                     m('h1.header', title),
-                    m('div.content', m.component(content))
+                    m('div.content', m.component(content, {}))
                 ]);
             }
         };

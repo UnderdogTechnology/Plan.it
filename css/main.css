@@ -109,16 +109,49 @@ body {
 *     COMMON    *
 *****************/
 
-/****************
-*      FORM     *
-*****************/
+.alert {
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    border-top: 1px solid #000;
+    background: #fcf8e3;
+    text-align: center;
+    -webkit-transition: bottom 300ms;
+    transition: bottom 300ms;
+}
 
-.center-form {
+.alert-hidden {
+    bottom: -50px;
+    -webkit-transition: bottom 300ms;
+    transition: bottom 300ms;
+}
+
+.results table {
     margin: 5% auto;
+    margin-bottom: -5%;
+    width: 95%;
+}
+
+.pagination td {
+    color: #B54132;
+}
+
+.pagination td:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.home {
     max-width: 500px;
+    margin: 5% auto;
     padding: 5px 1.5em;
 }
 
+/****************
+*      FORM     *
+*****************/
 .center-form .pure-controls .btn-primary {
     float: right;
 }

@@ -15,6 +15,11 @@ var util = {
         if(!path || index == path.length) {
             return newObj;
         }
+
+        if(!srcObj[path[index]]) {
+            srcObj[path[index]] = {};
+        }
+        
         srcObj[path[index]] = this.update(srcObj[path[index]], newObj, path, ++index);
         return srcObj;
     },
@@ -39,16 +44,21 @@ var util = {
         return aObj;
     },
     forEach: function(obj, cb) {
-        var arr = [];
+        var a = [],
+            o = {},
+            i = 0;
         for(var key in obj){
             if(obj.hasOwnProperty(key)) {
-                var tmp = cb(obj[key], key, obj);
-                if(tmp) {
-                    arr.push(tmp);
+                var tmp = cb(obj[key], key, obj, i++);
+                if(tmp && tmp.key && tmp.value) {
+                    o[tmp.key] = tmp.value;
+                }
+                else if(tmp) {
+                    a.push(tmp);
                 }
             }
         }
-        return arr;
+        return a.length ? a : o;
     },
     random: function(obj, cb) {
         var keys = Object.keys(obj),
@@ -109,6 +119,23 @@ var mutil = {
     },
     icon: function(name, children) {
         return m('i.fa.fa-' + name, children);
+    },
+    createSwitch: function(options, checked, label, cb, attr) {
+        return [
+            m('label', label),
+            m('div.tgl', attr, [
+                m('label.tgl-btn', {
+                        class: checked ? 'tgl-on' : 'tgl-off'
+                    },
+                    m('div.tgl-opt', options[0]),
+                    m('div.separator'),
+                    m('div.tgl-opt', options[1]),
+                    m('input[type="checkbox"].tgl-switch', {
+                        checked: checked,
+                        onchange: cb
+                    }))
+            ])
+        ];
     }
 };
 
