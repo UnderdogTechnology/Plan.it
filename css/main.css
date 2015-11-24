@@ -7,8 +7,8 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 45px;
-    line-height: 45px;
+    height: 50px;
+    line-height: 50px;
     text-align: center;
     background: #F0592B;
     border-bottom: 1px solid #B54132;
@@ -16,7 +16,7 @@
     text-shadow: -1px 0 #B54132, 0 1px #B54132, 1px 0 #B54132, 0 -1px #B54132;
     margin: 0;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
 /****************
@@ -34,7 +34,7 @@ body {
 .content {
     position: fixed;
     overflow-y: auto;
-    top: 46px;
+    top: 50px;
     left: 0;
     right: 0;
     bottom: 0;

@@ -80,7 +80,6 @@ system.cmp.find = {
                     m('button.pure-button.btn', {
                         onclick: function(e) {
                             e.preventDefault();
-                            e.stopPropagation();
                             ctrl.alert(null);
 
                             var fList = ctrl.model.get(true, form);
@@ -100,7 +99,6 @@ system.cmp.find = {
                     m('button.pure-button.btn-primary', {
                         onclick: function(e) {
                             e.preventDefault();
-                            e.stopPropagation();
                             ctrl.alert(null);
 
                             var fList = ctrl.model.get(true, form);

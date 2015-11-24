@@ -1,5 +1,5 @@
 (function() {
-
+    
     var system = window.system = window.system || {};
 
     var cmp = system.cmp = {};
@@ -31,7 +31,7 @@
 
     var loadNavItems = function() {
         return m.prop([{
-            name: 'Home',
+            name: 'PlanIt',
             url: '/',
             icon: 'fa fa-home fa-lg',
             component: cmp.home
