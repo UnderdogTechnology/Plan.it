@@ -1,3 +1,3 @@
 # PlanIt
 
-Check it out [here](http://underdogtechnology.github.io/Randomizer/).
+Check it out [here](http://underdogtechnology.github.io/PlanIt/).
