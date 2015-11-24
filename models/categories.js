@@ -21,6 +21,7 @@ system.model.categories = {
 
             categories = util.forEach(categories, function(cat, name) {
                 var activities = util.forEach(cat, function(activity, key){
+
                     var match = true;
 
                     if(match && filter.name() && !(key.toLowerCase().match(filter.name().toLowerCase()))) {
@@ -31,11 +32,17 @@ system.model.categories = {
                         match = false;
                     }
 
-                    if(match && filter.players().min() && !(filter.players().min() >= activity.players.min && filter.players().min() <= activity.players.max)) {
+                    var myMin = parseInt(filter.players().min()),
+                        min = parseInt(activity.players.min),
+                        max = parseInt(activity.players.max);
+
+                    if(match && myMin && !(myMin >= min && myMin <= min)) {
                         match = false;
                     }
 
-                    if(match && filter.players().max() && !(filter.players().max() >= activity.players.min && filter.players().max() <= activity.players.max)) {
+                    var myMax = parseInt(filter.players().max());
+                    
+                    if(match && myMax && !(myMax >= min && myMax <= max)) {
                         match = false;
                     }
 

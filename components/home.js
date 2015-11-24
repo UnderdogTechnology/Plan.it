@@ -78,11 +78,14 @@ system.cmp.home = {
                         alert: ctrl.alert
                 }),
                 m('div.alert', {
-                        class: !ctrl.alert() ? 'alert-hidden' : '',
+                        class: (!ctrl.alert() ? 'alert-hidden' : 'alert-'.concat(ctrl.alert().type)),
                         onclick: function() {
                                 ctrl.alert(null);
                         }
-                }, ctrl.alert()),
+                }, [
+                        m('span', ctrl.alert() ? ctrl.alert().message : ''),
+                        m('span.alert-x', 'x')
+                ]),
         ]);
     }
 };

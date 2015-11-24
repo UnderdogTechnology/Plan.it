@@ -115,11 +115,23 @@ body {
     left: 0;
     right: 0;
     padding: 10px;
-    border-top: 1px solid #000;
-    background: #fcf8e3;
+    border-top: 1px solid #666;
+    color: #666;
     text-align: center;
     -webkit-transition: bottom 300ms;
     transition: bottom 300ms;
+}
+
+.alert-warning {
+    background: #fcf8e3;
+}
+
+.alert-info {
+    background: #d9edf7;
+}
+
+.alert-success {
+    background: #dff0d8;
 }
 
 .alert-hidden {
@@ -128,10 +140,19 @@ body {
     transition: bottom 300ms;
 }
 
+.alert-x {
+    color: black;
+    opacity: .6;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: .7em;
+}
+
 .results table {
     margin: 5% auto;
     margin-bottom: -5%;
-    width: 95%;
+    width: 100%;
 }
 
 .pagination td {

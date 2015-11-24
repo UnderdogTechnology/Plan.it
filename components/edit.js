@@ -81,9 +81,24 @@ system.cmp.edit = {
                                     var selCat = Object.keys(ctrl.categories())[0];
 
                                     ctrl.selectedCategory(selCat == 'Add New' ? '' : selCat);
+                                    ctrl.form({
+                                        name: m.prop(null),
+                                        cost: m.prop(1),
+                                        players: m.prop({
+                                            min: m.prop(null),
+                                            max: m.prop(null)
+                                        })
+                                    });
+                                    ctrl.alert({
+                                        message: 'Activity successfully removed',
+                                        type: 'success'
+                                    });
                                 }
                                 else {
-                                    ctrl.alert('You must select a valid category');
+                                    ctrl.alert({
+                                        message: 'You must select a valid category',
+                                        type: 'warning'
+                                    });
                                 }
                             }
                         }, 'Remove'),
@@ -101,17 +116,26 @@ system.cmp.edit = {
                                 };
 
                                 if(form.name() && ctrl.selectedCategory(), act.cost && act.players.min && act.players.max) {
-                                    ctrl.model.update({
-                                        cost: form.cost(),
-                                        players: {
-                                            min:form.players().min(),
-                                            max: form.players().max()
-                                        }
-                                    }, [ctrl.selectedCategory(), form.name()].join('.'));
+                                    ctrl.model.update(form, [ctrl.selectedCategory(), form.name()].join('.'));
                                     ctrl.categories(ctrl.model.get(false));
+                                    ctrl.form({
+                                        name: m.prop(null),
+                                        cost: m.prop(1),
+                                        players: m.prop({
+                                            min: m.prop(null),
+                                            max: m.prop(null)
+                                        })
+                                    });
+                                    ctrl.alert({
+                                        message: 'Activity successfully added',
+                                        type: 'success'
+                                    });
                                 }
                                 else {
-                                    ctrl.alert('All fields must be populated');
+                                    ctrl.alert({
+                                        message: 'All fields must be populated',
+                                        type: 'warning'
+                                    });
                                 }
                             }
                         }, 'Submit')

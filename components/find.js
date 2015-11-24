@@ -89,7 +89,10 @@ system.cmp.find = {
                             }
                             else {
                                 ctrl.resultSet({});
-                                ctrl.alert('No activites found');
+                                ctrl.alert({
+                                        message: 'No activites found',
+                                        type: 'info'
+                                    });
                             }
                         }
                     }, 'Find All'),
@@ -108,14 +111,20 @@ system.cmp.find = {
                                         return o;
                                     }
                                     else {
-                                        ctrl.alert('No activites found');
+                                        ctrl.alert({
+                                            message: 'No activites found',
+                                            type: 'info'
+                                        });
                                         return {};
                                     }
                                 }));
                             }
                             else {
                                 ctrl.resultSet({});
-                                ctrl.alert('No activites found');
+                                ctrl.alert({
+                                    message: 'No activites found',
+                                    type: 'info'
+                                });
                             }
                         }
                     }, 'Random')

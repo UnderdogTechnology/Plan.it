@@ -17,6 +17,7 @@ system.cmp.results = {
                 m('td', 'Max')
             ]))].concat(util.forEach(ctrl.resultSet(), function(activity, name, obj, i){
                 var start = ctrl.curPage() * ctrl.pageSize();
+                ctrl.curPage(0);
 
                 if(i >= start && i < start + ctrl.pageSize()) {
                     return m('tr', [
