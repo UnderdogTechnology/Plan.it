@@ -193,6 +193,8 @@ div.form-control > table {
     border: 1px solid #148264;
     color: #fff;
     padding: .6em 1em;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
