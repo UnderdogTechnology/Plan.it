@@ -1,0 +1,11 @@
+{
+  "short_name": "PlanIt",
+  "icons": [
+    {
+      "src": "./images/logo.png",
+      "sizes": "48x48"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "#F0592B"
+}
