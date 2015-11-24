@@ -71,7 +71,6 @@ system.cmp.edit = {
                         m('button.pure-button.btn', {
                             onclick: function(e) {
                                 e.preventDefault();
-                                e.stopPropagation();
                                 ctrl.alert(null);
                                 
                                 if(ctrl.selectedCategory()) {
@@ -106,7 +105,6 @@ system.cmp.edit = {
                         m('button.pure-button.btn-primary', {
                             onclick: function(e) {
                                 e.preventDefault();
-                                e.stopPropagation();
                                 ctrl.alert(null);
 
                                 var act = {

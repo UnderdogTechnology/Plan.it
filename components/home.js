@@ -85,7 +85,7 @@ system.cmp.home = {
                 }, [
                         m('span', ctrl.alert() ? ctrl.alert().message : ''),
                         m('span.alert-x', 'x')
-                ]),
+                ])
         ]);
     }
 };

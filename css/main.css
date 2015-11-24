@@ -150,8 +150,7 @@ body {
 }
 
 .results table {
-    margin: 5% auto;
-    margin-bottom: -5%;
+    margin-top: 5%;
     width: 100%;
 }
 
@@ -166,8 +165,7 @@ body {
 
 .home {
     max-width: 500px;
-    margin: 5% auto;
-    padding: 5px 1.5em;
+    margin: .7em;
 }
 
 /****************
