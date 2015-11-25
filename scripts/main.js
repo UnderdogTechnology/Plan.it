@@ -4,7 +4,7 @@
         util.storage.create('config', {
             setdefault: 'false',
             pagesize: 5,
-            pageturner: 3,
+            pageturner: ['<', null, '>'],
             theme: 'one'
         });
     }
