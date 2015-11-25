@@ -45,7 +45,6 @@ system.cmp.home = {
                                 else {
                                         ctrl.selectedCategory(ctrl.selectedCategory() == 'Add New' ? 'Master' : ctrl.selectedCategory());
                                 }
-                                console.log(ctrl.selectedCategory());
 
                         }
                 };
