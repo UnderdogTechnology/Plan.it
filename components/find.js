@@ -20,6 +20,7 @@ system.cmp.find = {
             findAll: function(e) {
                     e.preventDefault();
                     ctrl.alert(null);
+                    ctrl.curPage(0);
 
                     var form = ctrl.form();
 
@@ -27,7 +28,6 @@ system.cmp.find = {
 
                     if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
                         ctrl.resultSet(fList[ctrl.selectedCategory()]);
-                        ctrl.curPage(0);
                     }
                     else {
                         ctrl.resultSet({});
@@ -40,6 +40,7 @@ system.cmp.find = {
             findRandom: function(e) {
                     e.preventDefault();
                     ctrl.alert(null);
+                    ctrl.curPage(0);
 
                     var form = ctrl.form();
 
@@ -48,7 +49,6 @@ system.cmp.find = {
                     if(Object.keys(fList).length) {
                         ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
                             if(name && activity) {
-                                ctrl.curPage(0);
                                 var o = {};
                                 o[name] = activity;
                                 return o;
