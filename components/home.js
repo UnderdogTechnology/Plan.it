@@ -36,7 +36,7 @@ system.cmp.home = {
                                 ctrl.selectedRow(null);
                                 ctrl.alert(null);
                                 ctrl.categories(ctrl.model.get(evt.target.checked));
-                                console.log(ctrl.selectedCategory());
+                                
                                 if(!evt.target.checked) {
                                         ctrl.categories()['Add New'] = {};
 
