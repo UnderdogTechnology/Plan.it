@@ -1,17 +1,23 @@
 (function() {
     
+    if(!Object.keys(util.storage.get('config')).length) {
+        util.storage.create('config', {
+                setdefault: 'false',
+                pagesize: 2,
+                pageturner: 3
+        });
+    }
+                    
     var system = window.system = window.system || {};
 
     var cmp = system.cmp = {};
     var model = system.model = {};
 
     var deps = {
-        // EXTRA
-        'scripts/': ['util'],
         // MODELS
         'models/': ['categories'],
         // COMPONENTS
-        'components/': ['home', 'find', 'results', 'edit']
+        'components/': ['home', 'alert', 'find', 'results', 'edit']
     };
 
     var layout = function(title, nav, content, needsSearch) {

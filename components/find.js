@@ -1,21 +1,76 @@
 system.cmp.find = {
     controller: function(args) {
-        return {
+        var ctrl = {
             model: args.model || system.model.categories,
             selectedCategory: args.selectedCategory || m.prop('Master'),
+            selectedRow: args.selectedRow || m.prop(),
             allowFind: args.allowFind || m.prop(true),
             allowFilter: args.allowFilter || m.prop(false),
-            resultSet: m.prop(),
+            resultSet: args.resultSet || m.prop(),
             alert: args.alert || m.prop(),
             form: args.form || m.prop({
                 name: m.prop(null),
                 cost: m.prop(null),
-                players: m.prop({
+                players: {
                     min: m.prop(null),
                     max: m.prop(null)
-                })
-            })
+                }
+            }),
+            curPage: m.prop(0),
+            findAll: function(e) {
+                    e.preventDefault();
+                    ctrl.alert(null);
+
+                    var form = ctrl.form();
+
+                    var fList = ctrl.model.get(true, form);
+
+                    if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
+                        ctrl.resultSet(fList[ctrl.selectedCategory()]);
+                        ctrl.curPage(0);
+                    }
+                    else {
+                        ctrl.resultSet({});
+                        ctrl.alert({
+                                message: 'No activites found',
+                                type: 'info'
+                            });
+                    }
+                },
+            findRandom: function(e) {
+                    e.preventDefault();
+                    ctrl.alert(null);
+
+                    var form = ctrl.form();
+
+                    var fList = ctrl.model.get(true, form);
+
+                    if(Object.keys(fList).length) {
+                        ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
+                            if(name && activity) {
+                                var o = {};
+                                o[name] = activity;
+                                return o;
+                            }
+                            else {
+                                ctrl.alert({
+                                    message: 'No activites found',
+                                    type: 'info'
+                                });
+                                return {};
+                            }
+                        }));
+                    }
+                    else {
+                        ctrl.resultSet({});
+                        ctrl.alert({
+                            message: 'No activites found',
+                            type: 'info'
+                        });
+                    }
+                }
         };
+        return ctrl;
     },
     view: function(ctrl, args) {
         var form = ctrl.form();
@@ -31,10 +86,10 @@ system.cmp.find = {
                         category: m.prop(null),
                         name: m.prop(ctrl.allowFilter() ? form.name() : null),
                         cost: m.prop(ctrl.allowFilter() ? form.cost() || 1 : null),
-                        players: m.prop({
-                            min: m.prop(ctrl.allowFilter() ? form.players().min() : null),
-                            max: m.prop(ctrl.allowFilter() ? form.players().max() : null)
-                        })
+                        players: {
+                            min: m.prop(ctrl.allowFilter() ? form.players.min() : null),
+                            max: m.prop(ctrl.allowFilter() ? form.players.max() : null)
+                        }
                     });
                 })),
                 m('div', {
@@ -63,74 +118,31 @@ system.cmp.find = {
                         m('label', 'Min People'),
                         m('input[type="number"].form-control', {
                             placeholder: 'Min People',
-                            value: form.players().min(),
-                            onchange: m.withAttr('value', form.players().min)
+                            value: form.players.min(),
+                            onchange: m.withAttr('value', form.players.min)
                         })
                     ]),
                     mutil.formGroup([
                         m('label', 'Max People'),
                         m('input[type="number"].form-control', {
                             placeholder: 'Max People',
-                            value: form.players().max(),
-                            onchange: m.withAttr('value', form.players().max)
+                            value: form.players.max(),
+                            onchange: m.withAttr('value', form.players.max)
                         })
                     ])
                 ]),
                 mutil.formControls([
                     m('button.pure-button.btn', {
-                        onclick: function(e) {
-                            e.preventDefault();
-                            ctrl.alert(null);
-
-                            var fList = ctrl.model.get(true, form);
-
-                            if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
-                                ctrl.resultSet(fList[ctrl.selectedCategory()]);
-                            }
-                            else {
-                                ctrl.resultSet({});
-                                ctrl.alert({
-                                        message: 'No activites found',
-                                        type: 'info'
-                                    });
-                            }
-                        }
+                        onclick: ctrl.findAll
                     }, 'Find All'),
                     m('button.pure-button.btn-primary', {
-                        onclick: function(e) {
-                            e.preventDefault();
-                            ctrl.alert(null);
-
-                            var fList = ctrl.model.get(true, form);
-                            
-                            if(Object.keys(fList).length) {
-                                ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
-                                    if(name && activity) {
-                                        var o = {};
-                                        o[name] = activity;
-                                        return o;
-                                    }
-                                    else {
-                                        ctrl.alert({
-                                            message: 'No activites found',
-                                            type: 'info'
-                                        });
-                                        return {};
-                                    }
-                                }));
-                            }
-                            else {
-                                ctrl.resultSet({});
-                                ctrl.alert({
-                                    message: 'No activites found',
-                                    type: 'info'
-                                });
-                            }
-                        }
+                        onclick: ctrl.findRandom
                     }, 'Random')
                 ]),
                 m.component(system.cmp.results, {
-                    resultSet: ctrl.resultSet
+                    resultSet:ctrl.resultSet,
+                    selectedRow: ctrl.selectedRow,
+                    curPage: ctrl.curPage
                 })
             ])
         ]);

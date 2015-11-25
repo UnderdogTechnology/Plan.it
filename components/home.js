@@ -2,23 +2,53 @@ system.cmp.home = {
         controller: function(args) {
                 var model = system.model.categories;
 
-                return {
+                var ctrl = {
                         model: model,
                         categories: m.prop(model.get(true)),
                         selectedCategory: args.selectedCategory || m.prop('Master'),
+                        selectedRow: m.prop(),
                         resultSet: m.prop(),
                         alert: m.prop(),
                         allowEdit: m.prop(false),
                         allowFind: m.prop(true),
+                        allowFilter: m.prop(false),
                         form: m.prop({
                                 name: m.prop(null),
                                 cost: m.prop(null),
-                                players: m.prop({
+                                players: {
                                         min: m.prop(null),
                                         max: m.prop(null)
-                                })
-                        })
+                                }
+                        }),
+                        switchMode: function(evt) {
+                                ctrl.allowFind(evt.target.checked);
+                                ctrl.allowEdit(!evt.target.checked);
+                                ctrl.form(ctrl.allowEdit() && ctrl.selectedRow() ? ctrl.selectedRow() : {
+                                        name: m.prop(null),
+                                        cost: m.prop(!ctrl.allowFind() || ctrl.allowFilter()  ? 1 : null),
+                                        players: {
+                                                min: m.prop(null),
+                                                max: m.prop(null)
+                                        }
+                                });
+
+                                ctrl.resultSet(null);
+                                ctrl.selectedRow(null);
+                                ctrl.alert(null);
+                                ctrl.categories(ctrl.model.get(evt.target.checked));
+
+                                if(!evt.target.checked) {
+                                        ctrl.categories()['Add New'] = {};
+
+                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Master' ? 'Add New' : ctrl.selectedCategory());
+                                }
+                                else {
+                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Add New' ? 'Master' : ctrl.selectedCategory());
+                                }
+
+                        }
                 };
+                return ctrl;
         },
     view: function(ctrl, args) {
         return m('div.home', [
@@ -36,31 +66,7 @@ system.cmp.home = {
                                     }, key);
                                 }))
                         ]),
-                        mutil.formGroup(mutil.createSwitch(['FIND', 'EDIT'], ctrl.allowFind(), 'Mode', function(evt) {
-                                ctrl.allowFind(evt.target.checked);
-                                ctrl.allowEdit(!evt.target.checked);
-                                ctrl.form({
-                                        name: m.prop(null),
-                                        cost: m.prop(!ctrl.allowFind() ? 1 : null),
-                                        players: m.prop({
-                                                min: m.prop(null),
-                                                max: m.prop(null)
-                                        })
-                                });
-                                ctrl.alert(null);
-                                ctrl.categories(ctrl.model.get(evt.target.checked));
-
-                                if(!evt.target.checked) {
-                                        ctrl.categories()['Add New'] = {};
-                                
-                                        var selCat = Object.keys(ctrl.categories())[0];
-                                        ctrl.selectedCategory(selCat == 'Add New' ? '' : selCat);
-                                }
-                                else {
-                                        ctrl.selectedCategory('Master');
-                                }
-
-                        }))
+                        mutil.formGroup(mutil.createSwitch(['FIND', 'EDIT'], ctrl.allowFind(), 'Mode', ctrl.switchMode))
                 ]),
                 m.component(system.cmp.edit, {
                         allowEdit: ctrl.allowEdit,
@@ -72,20 +78,17 @@ system.cmp.home = {
                 }),
                 m.component(system.cmp.find, {
                         allowFind: ctrl.allowFind,
+                        allowFilter: ctrl.allowFilter,
+                        resultSet: ctrl.resultSet,
                         selectedCategory: ctrl.selectedCategory,
+                        selectedRow: ctrl.selectedRow,
                         model: ctrl.model,
                         form: ctrl.form,
                         alert: ctrl.alert
                 }),
-                m('div.alert', {
-                        class: (!ctrl.alert() ? 'alert-hidden' : 'alert-'.concat(ctrl.alert().type)),
-                        onclick: function() {
-                                ctrl.alert(null);
-                        }
-                }, [
-                        m('span', ctrl.alert() ? ctrl.alert().message : ''),
-                        m('span.alert-x', 'x')
-                ])
+                m.component(system.cmp.alert, {
+                        alert: ctrl.alert
+                })
         ]);
     }
 };

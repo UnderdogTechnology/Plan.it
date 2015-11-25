@@ -43,6 +43,26 @@ var util = {
         }
         return aObj;
     },
+    range: function(f, t, cb) {
+        var a = [],
+            b = [],
+            tmp;
+
+        while(f <= t) {
+
+            if(cb) {
+                tmp = cb(f);
+            }
+
+            if(tmp) {
+                b.push(tmp);
+            }
+
+            a.push(f++);
+        }
+        
+        return b.length ? b : a;
+    },
     forEach: function(obj, cb) {
         var a = [],
             o = {},

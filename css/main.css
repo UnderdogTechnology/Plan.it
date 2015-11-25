@@ -25,7 +25,6 @@
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* font-size: 14px; */
     line-height: 1.42857143;
     color: #333;
     background-color: #fff;
@@ -34,7 +33,7 @@ body {
 .content {
     position: fixed;
     overflow-y: auto;
-    top: 50px;
+    top: 51px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -134,6 +133,14 @@ body {
     background: #dff0d8;
 }
 
+.alert-confirm div {
+    padding: .5em;
+    width: 35%;
+}
+.alert-confirm .right {
+    float: right;
+}
+
 .alert-hidden {
     bottom: -50px;
     -webkit-transition: bottom 300ms;
@@ -149,13 +156,26 @@ body {
     font-size: .7em;
 }
 
-.results table {
-    margin-top: 5%;
+.results > table {
+    margin-top:5%;
     width: 100%;
 }
-
+.pagination {
+    width: 100%;
+    margin-top: 0 !important;
+    border: 1px solid #cbcbcb;
+    border-top: none;
+}
 .pagination td {
     color: #B54132;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+}
+
+.pagination td:nth-child(3),
+.pagination td:nth-child(4) {
+    
 }
 
 .pagination td:hover {
@@ -165,7 +185,8 @@ body {
 
 .home {
     max-width: 500px;
-    margin: .7em;
+    padding: .7em;
+    margin: 0 auto;
 }
 
 /****************
@@ -218,15 +239,13 @@ div.form-control > table {
 
 @media screen and (min-width: 480px) {
     .form-control {
-        width: 50%;
-    
-        /* float: right; */
-}
+        width: 60%;
+    }
     .center-form .pure-controls .btn-primary {
         float: none;
     }
     .center-form .pure-controls .btn-primary,
     .center-form .pure-controls .btn {
-        margin: 0 1em;
+        margin: 0 1em !important;
     }
 }
