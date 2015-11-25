@@ -6,7 +6,7 @@ system.cmp.home = {
                         model: model,
                         categories: m.prop(model.get(true)),
                         selectedCategory: args.selectedCategory || m.prop('Master'),
-                        selectedRow: m.prop(),
+                        selectedResult: m.prop(),
                         resultSet: m.prop(),
                         alert: m.prop(),
                         allowEdit: m.prop(false),
@@ -23,27 +23,33 @@ system.cmp.home = {
                         switchMode: function(evt) {
                                 ctrl.allowFind(evt.target.checked);
                                 ctrl.allowEdit(!evt.target.checked);
-                                ctrl.form(ctrl.allowEdit() && ctrl.selectedRow() ? ctrl.selectedRow() : {
-                                        name: m.prop(null),
-                                        cost: m.prop(!ctrl.allowFind() || ctrl.allowFilter()  ? 1 : null),
-                                        players: {
-                                                min: m.prop(null),
-                                                max: m.prop(null)
-                                        }
-                                });
 
-                                ctrl.resultSet(null);
-                                ctrl.selectedRow(null);
+                                if(ctrl.allowEdit() && ctrl.selectedResult()) {
+                                        ctrl.form(ctrl.selectedResult().activity);
+                                        ctrl.selectedCategory(ctrl.selectedResult().category);
+                                        ctrl.selectedResult(null);
+                                }
+                                else {
+                                        ctrl.form({
+                                                name: m.prop(null),
+                                                cost: m.prop(!ctrl.allowFind() || ctrl.allowFilter()  ? 1 : null),
+                                                players: {
+                                                        min: m.prop(null),
+                                                        max: m.prop(null)
+                                                }
+                                        });
+                                }
+
                                 ctrl.alert(null);
                                 ctrl.categories(ctrl.model.get(evt.target.checked));
-                                
+
                                 if(!evt.target.checked) {
                                         ctrl.categories()['Add New'] = {};
 
-                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Master' ? 'Add New' : ctrl.selectedCategory());
+                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Master' || ! ctrl.selectedCategory() ? 'Add New' : ctrl.selectedCategory());
                                 }
                                 else {
-                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Add New' ? 'Master' : ctrl.selectedCategory());
+                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Add New' || ! ctrl.selectedCategory()  ? 'Master' : ctrl.selectedCategory());
                                 }
 
                         }
@@ -61,7 +67,6 @@ system.cmp.home = {
                                     }
                                 }, util.forEach(ctrl.categories(), function(val, key) {
                                     return m('option', {
-                                        style: ['Master', 'Add New'].indexOf(key) >= 0 ? 'border-top:1px solid #000;' : '',
                                         selected: key == ctrl.selectedCategory()
                                     }, key);
                                 }))
@@ -81,7 +86,7 @@ system.cmp.home = {
                         allowFilter: ctrl.allowFilter,
                         resultSet: ctrl.resultSet,
                         selectedCategory: ctrl.selectedCategory,
-                        selectedRow: ctrl.selectedRow,
+                        selectedResult: ctrl.selectedResult,
                         model: ctrl.model,
                         form: ctrl.form,
                         alert: ctrl.alert

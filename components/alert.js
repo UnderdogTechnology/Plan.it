@@ -15,10 +15,10 @@ system.cmp.alert = {
                 m('div.alert-confirm', {
                         hidden: !(ctrl.alert() && ctrl.alert().cb)
                 }, [
-                        m('div.right.btn-primary', {
+                        m('div.right.btn.primary', {
                                 onclick: ctrl.alert() ? ctrl.alert().cb : null
                         }, 'Yes'),
-                        m('div.btn', 'No')
+                        m('div.btn.secondary', 'No')
                 ])
         ])
     }

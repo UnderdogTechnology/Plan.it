@@ -3,7 +3,7 @@ system.cmp.find = {
         var ctrl = {
             model: args.model || system.model.categories,
             selectedCategory: args.selectedCategory || m.prop('Master'),
-            selectedRow: args.selectedRow || m.prop(),
+            selectedResult: args.selectedResult || m.prop(),
             allowFind: args.allowFind || m.prop(true),
             allowFilter: args.allowFilter || m.prop(false),
             resultSet: args.resultSet || m.prop(),
@@ -21,10 +21,11 @@ system.cmp.find = {
                     e.preventDefault();
                     ctrl.alert(null);
                     ctrl.curPage(0);
+                    ctrl.selectedResult(null);
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
+                    var fList = ctrl.model.get(true, form);
 
                     if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
                         ctrl.resultSet(fList[ctrl.selectedCategory()]);
@@ -41,6 +42,7 @@ system.cmp.find = {
                     e.preventDefault();
                     ctrl.alert(null);
                     ctrl.curPage(0);
+                    ctrl.selectedResult(null);
 
                     var form = ctrl.form();
 
@@ -133,17 +135,18 @@ system.cmp.find = {
                     ])
                 ]),
                 mutil.formControls([
-                    m('button.pure-button.btn', {
+                    m('button.pure-button.btn.secondary', {
                         onclick: ctrl.findAll
                     }, 'Find All'),
-                    m('button.pure-button.btn-primary', {
+                    m('button.pure-button.btn.primary', {
                         onclick: ctrl.findRandom
                     }, 'Random')
                 ]),
                 m.component(system.cmp.results, {
                     resultSet:ctrl.resultSet,
-                    selectedRow: ctrl.selectedRow,
-                    curPage: ctrl.curPage
+                    selectedResult: ctrl.selectedResult,
+                    curPage: ctrl.curPage,
+                    model: ctrl.model
                 })
             ])
         ]);

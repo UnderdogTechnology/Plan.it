@@ -139,10 +139,10 @@ system.cmp.edit = {
                         })
                     ]),
                     mutil.formControls([
-                        m('button.pure-button.btn', {
+                        m('button.pure-button.btn.secondary', {
                             onclick: ctrl.removeActivity
                         }, 'Remove'),
-                        m('button.pure-button.btn-primary', {
+                        m('button.pure-button.btn.primary', {
                             onclick: ctrl.submitActivity
                         }, 'Submit')
                     ])
