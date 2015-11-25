@@ -3,7 +3,7 @@
     if(!Object.keys(util.storage.get('config')).length) {
         util.storage.create('config', {
                 setdefault: 'false',
-                pagesize: 2,
+                pagesize: 5,
                 pageturner: 3
         });
     }
