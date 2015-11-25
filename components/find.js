@@ -24,7 +24,7 @@ system.cmp.find = {
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form);
+                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
 
                     if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
                         ctrl.resultSet(fList[ctrl.selectedCategory()]);
