@@ -48,6 +48,7 @@ system.cmp.find = {
                     if(Object.keys(fList).length) {
                         ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
                             if(name && activity) {
+                                ctrl.curPage(0);
                                 var o = {};
                                 o[name] = activity;
                                 return o;
