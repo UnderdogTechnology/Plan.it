@@ -18,7 +18,7 @@
         // MODELS
         'models/': ['categories'],
         // COMPONENTS
-        'components/': ['home', 'alert', 'find', 'results', 'edit']
+        'components/': ['home', 'alert', 'find', 'results', 'edit', 'settings']
     };
     
     var layout = function(title, nav, content, needsSearch) {
@@ -44,6 +44,11 @@
             url: '/',
             icon: 'fa fa-home fa-lg',
             component: cmp.home
+        }, {
+            name: 'Settings',
+            url: '/settings',
+            icon: 'fa fa-home fa-lg',
+            component: cmp.settings
         }]);
     }
     ;

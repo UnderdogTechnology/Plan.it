@@ -1,9 +1,9 @@
 system.cmp.alert = {
-        controller: function(args) {
-                return {
-                        alert: args.alert || m.prop(null)
-                };
-        },
+    controller: function(args) {
+            return {
+                    alert: args.alert || m.prop(null)
+            };
+    },
     view: function(ctrl, args) {
         return m('div.alert', {
                 class: (!ctrl.alert() ? 'alert-hidden' : 'alert-'.concat(ctrl.alert().type)),
