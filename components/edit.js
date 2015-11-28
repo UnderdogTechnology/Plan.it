@@ -49,7 +49,7 @@ system.cmp.edit = {
 
                 var form = ctrl.form();
 
-                if(ctrl.selectedCategory() != 'Add New') {
+                if(ctrl.selectedCategory() && ctrl.selectedCategory() != 'Add New') {
                     ctrl.alert({
                             message: 'Are you sure you want to remove the ' + (form.name() ? 'activity' : 'category') + ' "' + (form.name() || ctrl.selectedCategory()) + '"?',
                             type: 'warning',
