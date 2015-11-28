@@ -17,7 +17,6 @@ system.cmp.results = {
                         if(typeof text == 'string') {
                             return m('td',{
                                 onclick: function() {
-                                    ctrl.select();
                                     var addFirstLast = pageturners.length >= 4;
 
                                     switch(this.innerText) {
@@ -77,20 +76,18 @@ system.cmp.results = {
                     });
                 } 
             },
-            select: function(e){
-                ctrl.selectedResult(null);
-                util.forEach(util.qq('tr.result-row'), function(tr) {
-                    tr.className = 'result-row';
-                });
-                if(e) {
-                    var tr = this.nodeName == "TR" ? this : this.parentNode;
-                    tr.className = 'result-row secondary';
+            selectedAct: m.prop(),
+            select: function(name){
+                if(name) {
+                    var resultSet = ctrl.resultSet(),
+                        result = resultSet[name];
+                    ctrl.selectedAct(name);
                     var activity = {
-                            name: m.prop(tr.children[0].innerText),
-                            cost: m.prop(eutil.costs[tr.children[1].innerText]),
+                            name: m.prop(name),
+                            cost: m.prop(result.cost),
                             players: {
-                                    min: m.prop(tr.children[2].innerText),
-                                    max: m.prop(tr.children[3].innerText)
+                                    min: m.prop(result.players.min),
+                                    max: m.prop(result.players.max)
                             }
                     };
                     ctrl.selectedResult({
@@ -120,7 +117,8 @@ system.cmp.results = {
 
                     if(ctrl.pageSize() <= 0 || (i >= start && i < start + ctrl.pageSize())) {
                         return m('tr.result-row', {
-                            onclick: ctrl.select
+                            onclick: ctrl.select.bind(null, name),
+                            class: ctrl.selectedAct() == name ? 'secondary' : ''
                         }, [
                             m('td', name),
                             m('td', Object.keys(eutil.costs)[activity.cost - 1]),
