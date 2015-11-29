@@ -21,14 +21,14 @@ system.cmp.find = {
                     e.preventDefault();
                     ctrl.alert(null);
                     ctrl.curPage(0);
-                    ctrl.selectedResult(null);
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form);
+                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
 
                     if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
                         ctrl.resultSet(fList[ctrl.selectedCategory()]);
+                        ctrl.selectedResult(null);
                     }
                     else {
                         ctrl.resultSet({});
@@ -42,11 +42,10 @@ system.cmp.find = {
                     e.preventDefault();
                     ctrl.alert(null);
                     ctrl.curPage(0);
-                    ctrl.selectedResult(null);
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form);
+                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
 
                     if(Object.keys(fList).length) {
                         ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
@@ -63,6 +62,7 @@ system.cmp.find = {
                                 return {};
                             }
                         }));
+                        ctrl.selectedResult(null);
                     }
                     else {
                         ctrl.resultSet({});

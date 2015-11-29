@@ -37,18 +37,21 @@ system.model.categories = {
                         match = false;
                     }
 
-                    var myMin = parseInt(filter.players.min()),
-                        min = parseInt(activity.players.min),
+                    var min = parseInt(activity.players.min),
                         max = parseInt(activity.players.max);
 
-                    if(match && myMin && !(myMin >= min && myMin <= min)) {
-                        match = false;
+                    if(match && filter.players.min()) {
+                        var myMin = parseInt(filter.players.min());
+                        if(!isNaN(myMin) && !(myMin >= min && max <= myMin)) {
+                            match = false;
+                        }
                     }
 
-                    var myMax = parseInt(filter.players.max());
-                    
-                    if(match && myMax && !(myMax >= min && myMax <= max)) {
-                        match = false;
+                    if(match && filter.players.max()) {
+                        var myMax = parseInt(filter.players.max());
+                        if(!isNaN(myMax) && !(myMax >= min && max <= myMax)) {
+                            match = false;
+                        }
                     }
                     
                     if(match) {
