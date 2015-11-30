@@ -78,7 +78,7 @@ system.cmp.results = {
             },
             selectedAct: m.prop(),
             select: function(name){
-                if(name) {
+                if(name && ctrl.selectedAct() != name) {
                     var resultSet = ctrl.resultSet(),
                         result = resultSet[name];
                     ctrl.selectedAct(name);
@@ -94,6 +94,9 @@ system.cmp.results = {
                         activity: activity,
                         category: Object.keys(ctrl.model.get(false, activity))[0]
                     })
+                } else {
+                        ctrl.selectedAct(null);
+                        ctrl.selectedResult(null);
                 }
             }
         };

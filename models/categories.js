@@ -27,10 +27,16 @@ system.model.categories = {
             categories = util.forEach(categories, function(cat, name) {
                 var activities = util.forEach(cat, function(activity, key){
 
-                    var match = true;
+                    var match = true,
+                        fName = filter.name();
 
-                    if(match && filter.name() && !(key.toLowerCase().match(filter.name().toLowerCase()))) {
-                        match = false;
+                    if(match && fName) {
+                        if(!isNaN(fName))
+                        {
+                            match = key === fName;
+                        } else {
+                            match = key.toLowerCase().match(fName.toLowerCase());
+                        }
                     }
 
                     if(match && filter.cost() && filter.cost() < activity.cost) {
@@ -41,15 +47,15 @@ system.model.categories = {
                         max = parseInt(activity.players.max);
 
                     if(match && filter.players.min()) {
-                        var myMin = parseInt(filter.players.min());
-                        if(!isNaN(myMin) && !(myMin >= min && max <= myMin)) {
+                        var fMin = parseInt(filter.players.min());
+                        if(!isNaN(fMin) && !(fMin >= fMin && fMin <= fMin)) {
                             match = false;
                         }
                     }
 
                     if(match && filter.players.max()) {
-                        var myMax = parseInt(filter.players.max());
-                        if(!isNaN(myMax) && !(myMax >= min && max <= myMax)) {
+                        var fMax = parseInt(filter.players.max());
+                        if(!isNaN(fMax) && !(fMax >= min && max <= fMax)) {
                             match = false;
                         }
                     }
