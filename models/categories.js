@@ -1,10 +1,10 @@
 system.model.categories = {
     get: function(b, filter, selectedCategory) {
-        var categories = util.storage.get('categories');
+        var categories;
 
-        if(!Object.keys(categories).length && util.storage.get('config')['setdefault'] === 'false') {
+        if(!Object.keys(categories = util.storage.get('categories')).length && system.model.settings.get().setdefault === 'false') {
             this.update(categories = this.default);
-            util.storage.update('config', true, 'setdefault');
+            util.storage.update('settings', true, 'setdefault');
         }
 
         if(b) {
