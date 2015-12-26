@@ -1,37 +1,32 @@
 (function() {
-    
-    if (!Object.keys(util.storage.get('config')).length) {
-        util.storage.create('config', {
-            setdefault: 'false',
-            pagesize: 5,
-            pageturner: ['<', null, '>'],
-            theme: 'one'
-        });
-    }
-    
     var system = window.system = window.system || {};
-    
+
     var cmp = system.cmp = {};
     var model = system.model = {};
     
     var deps = {
         // MODELS
-        'models/': ['categories'],
+        'models/': ['categories', 'themes', 'settings'],
         // COMPONENTS
         'components/': ['home', 'alert', 'find', 'results', 'edit', 'settings']
     };
     
     var layout = function(title, nav, content, needsSearch) {
-        var config = util.storage.get('config');
         return {
             controller: function(args) {
                 document.title = title;
-                return {};
+
+                var settings = system.model.settings.get();
+
+                var themes = system.model.themes.get();
+                system.loadTheme(settings.theme, themes[settings.theme]);
+
+                return {settings: settings};
             },
             view: function(ctrl, args) {
-                return m('div.wrapper.theme-' + (config.theme || 'one'), [
+                return m('div.wrapper', [
                     m('h1.header.primary', title), 
-                    m('div.content', m.component(content, {}))
+                    m('div.content', m.component(content, args[0]))
                 ]);
             }
         };
@@ -74,6 +69,5 @@
     
     // load models, then components
     system.loadModules(deps, loadRoutes);
-
 }
 ());

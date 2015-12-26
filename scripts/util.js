@@ -97,6 +97,7 @@ var util = {
         },
         create: function(name, obj) {
             localStorage.setItem(name, JSON.stringify(obj));
+            return this.get(name);
         },
         update: function(name, obj, path) {
             this.create(name, util.update(this.get(name), obj, path));

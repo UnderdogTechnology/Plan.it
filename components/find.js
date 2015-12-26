@@ -146,7 +146,8 @@ system.cmp.find = {
                     resultSet:ctrl.resultSet,
                     selectedResult: ctrl.selectedResult,
                     curPage: ctrl.curPage,
-                    model: ctrl.model
+                    model: ctrl.model,
+                    settings: args.settings
                 })
             ])
         ]);

@@ -1,10 +1,11 @@
 system.cmp.results = {
     controller: function(args) {
+        var settings = args.settings;
         var ctrl = {
             model: args.model || system.model.categories,
-            pageturners: m.prop(util.storage.get('config')['pageturner'] || 'x'),
+            pageturners: m.prop(settings.pageturner),
             curPage: args.curPage || m.prop(0),
-            pageSize: m.prop(util.storage.get('config')['pagesize'] || 5),
+            pageSize: m.prop(settings.pagesize),
             resultSet: args.resultSet || m.prop(),
             selectedResult: args.selectedResult || m.prop(),
             createPageturners: function() {

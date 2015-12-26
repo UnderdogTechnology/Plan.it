@@ -79,7 +79,8 @@ system.cmp.home = {
                         model: ctrl.model,
                         form: ctrl.form,
                         categories: ctrl.categories,
-                        alert: ctrl.alert
+                        alert: ctrl.alert,
+                        settings: args.settings
                 }),
                 m.component(system.cmp.find, {
                         allowFind: ctrl.allowFind,
@@ -89,10 +90,12 @@ system.cmp.home = {
                         selectedResult: ctrl.selectedResult,
                         model: ctrl.model,
                         form: ctrl.form,
-                        alert: ctrl.alert
+                        alert: ctrl.alert,
+                        settings: args.settings
                 }),
                 m.component(system.cmp.alert, {
-                        alert: ctrl.alert
+                        alert: ctrl.alert,
+                        settings: args.settings
                 })
         ]);
     }
