@@ -43,7 +43,7 @@ system.model.categories = function() {
         default: function() {
             var categories = util.storage.get('categories');
             if(!Object.keys(categories).length && !system.model.settings.get().defaulted['categories']) {
-                var d = [
+                categories = [
                     {'id': 1, 'name': 'Video Games'}, 
                     {'id': 2, 'name': 'Film'},
                     {'id': 3, 'name': 'Weekend'},
@@ -51,7 +51,7 @@ system.model.categories = function() {
                     {'id': 5, 'name': 'Misc'},
                     {'id': 6, 'name': 'Dice'}
                 ];
-                util.storage.create('categories', categories = d);
+                util.storage.create('categories', categories);
                 util.storage.update('settings', true, 'defaulted.categories');
             }
             return categories;
