@@ -2,6 +2,8 @@ system.cmp.settings = {
     controller: function(args) {
             return {
                 resetConfig: function() {
+                    localStorage.clear();
+                    /*
                     util.storage.create('config', {
                         defaulted: {},
                         pagesize: 5,
@@ -9,7 +11,7 @@ system.cmp.settings = {
                         theme: 'one'
                     });
                     util.storage.create('categories', {});
-                    util.storage.create('activities', {});
+                    util.storage.create('activities', {});*/
                 }
             };
     },
