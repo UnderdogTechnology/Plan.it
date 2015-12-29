@@ -162,10 +162,10 @@ system.cmp.find = {
                     ])
                 ]),
                 mutil.formControls([
-                    m('button.pure-button.btn.secondary', {
+                    m('a.pure-button.btn.secondary', {
                         onclick: ctrl.findAll
                     }, 'Find All'),
-                    m('button.pure-button.btn.primary', {
+                    m('a.pure-button.btn.primary', {
                         onclick: ctrl.findRandom
                     }, 'Random')
                 ]),
