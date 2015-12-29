@@ -98,7 +98,7 @@ body {
 }
 
 /****************
-*     COMMON    *
+*     ALERT     *
 *****************/
 
 .alert {
@@ -149,6 +149,9 @@ body {
     font-size: .7em;
 }
 
+/****************
+*    RESULTS    *
+*****************/
 .results > table {
     margin-top:5%;
     width: 100%;
@@ -156,6 +159,32 @@ body {
 
 .results > table.primary {
     border: 1px solid;
+}
+
+.result-row td,
+.results > table thead td{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.result-row td:nth-child(1),
+.results > table thead td:nth-child(1) {
+    width: 40%;
+}
+.result-row td:nth-child(2),
+.results > table thead td:nth-child(2) {
+    width: 40%;
+}
+.result-row td:nth-child(3),
+.results > table thead td:nth-child(3) {
+    text-align:center;
+    width: 10%;
+}
+.result-row td:nth-child(4),
+.results > table thead td:nth-child(4) {
+    text-align:center;
+    width: 10%;
 }
 
 .pagination {
@@ -174,6 +203,10 @@ body {
 .pagination .page-selected {
     text-decoration: underline;
 }
+
+/****************
+*     COMMON    *
+*****************/
 
 .home {
     max-width: 500px;

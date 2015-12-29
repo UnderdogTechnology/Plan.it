@@ -1,21 +1,14 @@
 system.cmp.find = {
     controller: function(args) {
+            var model = args.model;
         var ctrl = {
-            model: args.model || system.model.categories,
-            selectedCategory: args.selectedCategory || m.prop('Master'),
-            selectedResult: args.selectedResult || m.prop(),
-            allowFind: args.allowFind || m.prop(true),
-            allowFilter: args.allowFilter || m.prop(false),
-            resultSet: args.resultSet || m.prop(),
+            model: model,
+            selected: args.selected || m.prop({}),
+            visibility: args.visibility,
+            resultSet: m.prop(),
             alert: args.alert || m.prop(),
-            form: args.form || m.prop({
-                name: m.prop(null),
-                cost: m.prop(null),
-                players: {
-                    min: m.prop(null),
-                    max: m.prop(null)
-                }
-            }),
+            resetForm: args.resetForm,
+            form: args.form,
             curPage: m.prop(0),
             findAll: function(e) {
                     e.preventDefault();
@@ -24,11 +17,30 @@ system.cmp.find = {
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
-
-                    if(Object.keys(fList).length && Object.keys(fList[ctrl.selectedCategory()]).length) {
-                        ctrl.resultSet(fList[ctrl.selectedCategory()]);
-                        ctrl.selectedResult(null);
+                    var fList;
+                    if (form.category().toString() == '-1') {
+                            fList = model.a.get({
+                                    'in_master': 'true',
+                                    'name': form.name(),
+                                    'cost': form.cost(),
+                                    'players': {
+                                            'min': form.players.min(),
+                                            'max': form.players.max()
+                                    }
+                            });
+                    } else {
+                            fList = model.a.get({
+                                    'category_id': form.category().toString(),
+                                    'name': form.name(),
+                                    'cost': form.cost(),
+                                    'players': {
+                                            'min': form.players.min(),
+                                            'max': form.players.max()
+                                    }
+                            });
+                    }
+                    if(fList.length) {
+                        ctrl.resultSet(fList);
                     }
                     else {
                         ctrl.resultSet({});
@@ -37,6 +49,7 @@ system.cmp.find = {
                                 type: 'info'
                             });
                     }
+                    ctrl.selected({});
                 },
             findRandom: function(e) {
                     e.preventDefault();
@@ -45,10 +58,23 @@ system.cmp.find = {
 
                     var form = ctrl.form();
 
-                    var fList = ctrl.model.get(true, form, ctrl.selectedCategory());
+                    var fList;
+                    if (form.category().toString() == '-1') {
+                            fList = model.a.get({'in_master': 'true'});
+                    } else {
+                            fList = model.a.get({
+                                    'category_id': form.category().toString(),
+                                    'name': form.name(),
+                                    'cost': form.cost(),
+                                    'players': {
+                                            'min': form.players.min(),
+                                            'max': form.players.max()
+                                    }
+                            });
+                    }
 
-                    if(Object.keys(fList).length) {
-                        ctrl.resultSet(util.random(fList[ctrl.selectedCategory()], function(activity, name) {
+                    if(fList.length) {
+                        ctrl.resultSet(util.random(fList, function(activity, name) {
                             if(name && activity) {
                                 var o = {};
                                 o[name] = activity;
@@ -62,7 +88,6 @@ system.cmp.find = {
                                 return {};
                             }
                         }));
-                        ctrl.selectedResult(null);
                     }
                     else {
                         ctrl.resultSet({});
@@ -71,32 +96,34 @@ system.cmp.find = {
                             type: 'info'
                         });
                     }
+                    ctrl.selected({});
                 }
         };
         return ctrl;
     },
     view: function(ctrl, args) {
         var form = ctrl.form();
-
+        
         return m('div.find', {
-            hidden: !ctrl.allowFind()
+            hidden: !ctrl.visibility.allowFind()
         }, [
             m('form.center-form.pure-form.pure-form-aligned', [
-                mutil.formGroup(mutil.createSwitch(['ON', 'OFF'], ctrl.allowFilter(), 'Filter', function(evt) {
-                    ctrl.alert(null);
-                    ctrl.allowFilter(evt.target.checked);
+                mutil.formGroup(mutil.createSwitch(['ON', 'OFF'], ctrl.visibility.allowFilter(), 'Filter', function(evt) {
+                    ctrl.visibility.allowFilter(evt.target.checked);
                     ctrl.form({
-                        category: m.prop(null),
-                        name: m.prop(ctrl.allowFilter() ? form.name() : null),
-                        cost: m.prop(ctrl.allowFilter() ? form.cost() || 1 : null),
+                        id: m.prop(null),
+                        category: m.prop(-1),
+                        inMaster: m.prop(true),
+                        name: m.prop(ctrl.visibility.allowFilter() ? form.name() : null),
+                        cost: m.prop(ctrl.visibility.allowFilter() ? form.cost() || 1 : null),
                         players: {
-                            min: m.prop(ctrl.allowFilter() ? form.players.min() : null),
-                            max: m.prop(ctrl.allowFilter() ? form.players.max() : null)
+                            min: m.prop(ctrl.visibility.allowFilter() ? form.players.min() : null),
+                            max: m.prop(ctrl.visibility.allowFilter() ? form.players.max() : null)
                         }
                     });
                 })),
                 m('div', {
-                    hidden: !ctrl.allowFilter()
+                    hidden: !ctrl.visibility.allowFilter()
                 }, [
                     mutil.formGroup([
                         m('label', 'Name'),
@@ -111,10 +138,10 @@ system.cmp.find = {
                         m('select.form-control', {
                             value: form.cost(),
                             onchange: m.withAttr('value', form.cost)
-                        }, util.forEach(eutil.costs, function(val, key){
+                        }, eutil('costs').map(function(cost){
                             return m('option', {
-                                value: val
-                            }, key)
+                                value: cost.id
+                            }, cost.name)
                         }))
                     ]),
                     mutil.formGroup([
@@ -144,10 +171,11 @@ system.cmp.find = {
                 ]),
                 m.component(system.cmp.results, {
                     resultSet:ctrl.resultSet,
-                    selectedResult: ctrl.selectedResult,
+                    selected: ctrl.selected,
                     curPage: ctrl.curPage,
                     model: ctrl.model,
-                    settings: args.settings
+                    settings: args.settings,
+                    form: ctrl.form
                 })
             ])
         ]);

@@ -3,12 +3,13 @@ system.cmp.settings = {
             return {
                 resetConfig: function() {
                     util.storage.create('config', {
-                        setdefault: 'false',
+                        defaulted: {},
                         pagesize: 5,
                         pageturner: ['<', null, '>'],
                         theme: 'one'
                     });
                     util.storage.create('categories', {});
+                    util.storage.create('activities', {});
                 }
             };
     },

@@ -1,20 +1,22 @@
 system.cmp.results = {
     controller: function(args) {
-        var settings = args.settings;
+        var settings = args.settings,
+            model = args.model;
         var ctrl = {
-            model: args.model || system.model.categories,
+            model: model,
             pageturners: m.prop(settings.pageturner),
             curPage: args.curPage || m.prop(0),
             pageSize: m.prop(settings.pagesize),
-            resultSet: args.resultSet || m.prop(),
-            selectedResult: args.selectedResult || m.prop(),
+            resultSet: args.resultSet,
+            selected: args.selected,
+            form: args.form,
             createPageturners: function() {
                 var curPage = ctrl.curPage(),
                     pageturners = ctrl.pageturners(),
                     lastPage = ctrl.resultSet() ? Math.ceil(Object.keys(ctrl.resultSet()).length / ctrl.pageSize() - 1):0;
 
                  if(typeof pageturners == 'object') {
-                    return util.forEach(pageturners, function(text){
+                    return pageturners.map(function(text){
                         if(typeof text == 'string') {
                             return m('td',{
                                 onclick: function() {
@@ -78,26 +80,17 @@ system.cmp.results = {
                 } 
             },
             selectedAct: m.prop(),
-            select: function(name){
-                if(name && ctrl.selectedAct() != name) {
-                    var resultSet = ctrl.resultSet(),
-                        result = resultSet[name];
-                    ctrl.selectedAct(name);
-                    var activity = {
-                            name: m.prop(name),
-                            cost: m.prop(result.cost),
-                            players: {
-                                    min: m.prop(result.players.min),
-                                    max: m.prop(result.players.max)
-                            }
-                    };
-                    ctrl.selectedResult({
-                        activity: activity,
-                        category: Object.keys(ctrl.model.get(false, activity))[0]
-                    })
+            select: function(id){
+                if(id && ctrl.selected()['id'] != id) {
+                    var catId = ctrl.form().category().toString(),
+                        resultSet = ctrl.resultSet();
+                        
+                    ctrl.selected(model.a.get({
+                        'id': id,
+                        'category_id': catId != '-1' ? catId : null
+                    })[0]);
                 } else {
-                        ctrl.selectedAct(null);
-                        ctrl.selectedResult(null);
+                        ctrl.selected({});
                 }
             }
         };
@@ -116,16 +109,15 @@ system.cmp.results = {
                         m('td', 'Max')
                     ])
                 ),
-                m('tbody', util.forEach(ctrl.resultSet(), function(activity, name, obj, i){
+                m('tbody', util.forEach(ctrl.resultSet(), function(activity, key, obj, i){
                     var start = ctrl.curPage() * ctrl.pageSize();
-
                     if(ctrl.pageSize() <= 0 || (i >= start && i < start + ctrl.pageSize())) {
                         return m('tr.result-row', {
-                            onclick: ctrl.select.bind(null, name),
-                            class: ctrl.selectedAct() == name ? 'secondary' : ''
+                            onclick: ctrl.select.bind(null, activity.id),
+                            class: ctrl.selected()['id'] == activity.id ? 'secondary' : ''
                         }, [
-                            m('td', name),
-                            m('td', Object.keys(eutil.costs)[activity.cost - 1]),
+                            m('td', activity.name),
+                            m('td', eutil('costs', {'id': activity.cost})[0].name),
                             m('td', activity.players.min),
                             m('td', activity.players.max)
                         ]);

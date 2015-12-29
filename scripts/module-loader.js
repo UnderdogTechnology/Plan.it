@@ -33,6 +33,7 @@
     };
 
     system.loadTheme = function(name, theme) {
+        var theme = system.model.themes.get()[name];
         var link = document.createElement('link');
         link.rel = "stylesheet";
         link.href = './themes/'+ name + '/' + theme.css + '.css';

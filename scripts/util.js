@@ -8,6 +8,56 @@ var util = {
     qq: function(q, c) {
         return [].slice.call((c || document).querySelectorAll(q));
     },
+    oneup: function(arr, prop, cb) {
+        var tmp = [];
+        for(var i in arr) {
+            if(arr[i].hasOwnProperty(prop)) {
+                tmp.push(parseInt(arr[i][prop]));
+            }
+        }
+        tmp = tmp.sort(function(a,b) {
+            return a-b;
+        });
+
+        return tmp.length ? tmp.pop() + 1 : 1;
+    },
+    upsert: function(arr, obj) {
+        if(!arr.length || !obj.id) {
+            obj.id = this.oneup(arr, 'id');
+            arr.push(obj);
+        }
+        else {
+            arr = arr.map(function(o) {
+                var total = 0,
+                    comply = 0,
+                    identifiers = [],
+                    tmp = util.extend({}, o);
+                for(var f in obj) {
+                    if(obj.hasOwnProperty(f) && o.hasOwnProperty(f)) {
+                        if((obj[f] || obj[f] === false) && f != 'id') {
+                            ++total;
+                            tmp[f] = obj[f];
+                            if((obj[f]).toString() == (o[f]).toString()) {
+                                ++comply;
+                            }
+                        }
+                    }
+                }
+                if(!obj.id && comply && total && comply == total) {
+                    obj.id = o.id;
+                }
+                if(obj.id == o.id) {
+                    o = tmp;
+                }
+
+                return o;
+            });
+        }
+        return {
+            arr: arr,
+            obj: obj
+        };
+    },
     update: function(srcObj, newObj, path, index) {
         index = index || 0;
         path = (typeof path) == 'string' ? path.split('.') : path;
@@ -23,7 +73,34 @@ var util = {
         srcObj[path[index]] = this.update(srcObj[path[index]], newObj, path, ++index);
         return srcObj;
     },
-    remove: function(obj, path, index) {
+    remove: function(arr, obj) {
+        if(arr.length && Object.keys(obj).length) {
+            arr = arr.filter(function(o) {
+                var total = 0,
+                    comply = 0;
+                    
+                for(var f in obj) {
+                    if(obj[f] && obj.hasOwnProperty(f) && o.hasOwnProperty(f)) {
+                        if((obj[f] || obj[f] === false) && f != 'id') {
+                            ++total;
+                            if((obj[f]).toString() == (o[f]).toString()) {
+                                ++comply;
+                            }
+                        }
+                    }
+                }
+                if(comply && total && comply == total) {
+                    obj.id = o.id
+                } 
+                return !(obj.id == o.id);
+            });
+        }
+        return {
+            arr: arr,
+            obj: obj
+        };
+    },
+    remove2: function(obj, path, index) {
         index = index || 0;
         path = (typeof path) == 'string' ? path.split('.') : path;
 
@@ -35,10 +112,18 @@ var util = {
         return obj;
     },
     extend: function(aObj, bObj) {
-        for(var key in bObj)
-        {
-            if(bObj.hasOwnProperty(key)) {
-                aObj[key] = bObj[key];
+        if(Array.isArray(aObj) && !Array.isArray(bObj)) {
+                aObj.push(bObj);
+        }
+        else {
+            for(var key in bObj)
+            {
+                if(Array.isArray(aObj)) {
+                    aObj.push(bObj[key]);
+                } else if(bObj.hasOwnProperty(key)) {
+                    aObj[key] = bObj[key];
+                }
+
             }
         }
         return aObj;
@@ -63,22 +148,18 @@ var util = {
         
         return b.length ? b : a;
     },
-    forEach: function(obj, cb) {
-        var a = [],
-            o = {},
+    forEach: function(obj, cb, returnType) {
+        var o = Array.isArray(obj) ? [] : {},
             i = 0;
         for(var key in obj){
             if(obj.hasOwnProperty(key)) {
                 var tmp = cb(obj[key], key, obj, i++);
-                if(tmp && tmp.key && tmp.value) {
-                    o[tmp.key] = tmp.value;
-                }
-                else if(tmp) {
-                    a.push(tmp);
+                if(tmp) {
+                    o = util.extend(o, tmp);
                 }
             }
         }
-        return a.length ? a : o;
+        return o;
     },
     random: function(obj, cb) {
         var keys = Object.keys(obj),
@@ -91,7 +172,7 @@ var util = {
     storage: {
         get: function(name) {
             if((typeof Storage) !== 'undefined') {
-                return JSON.parse(localStorage.getItem(name)) || {};
+                return JSON.parse(localStorage.getItem(name)) || [];
             }
             alert('Local Storage is not supported!');
         },
@@ -99,10 +180,20 @@ var util = {
             localStorage.setItem(name, JSON.stringify(obj));
             return this.get(name);
         },
+        upsert: function(name, obj) {
+            var status = util.upsert(this.get(name), obj);
+            this.create(name, status.arr);
+            return status.obj;
+        },
         update: function(name, obj, path) {
             this.create(name, util.update(this.get(name), obj, path));
         },
-        remove: function(name, path) {
+        remove: function(name, obj) {
+            var status = util.remove(this.get(name), obj);
+            this.create(name, status.arr);
+            return status.obj;
+        },
+        remove2: function(name, path) {
             this.create(name, util.remove(this.get(name), path));
         }
     },
@@ -171,10 +262,28 @@ mutil.c = {
  ** Enumerators
  **/
 
-var eutil = {
-    costs: {
-        'Free': 1,
-        'Cheap': 2,
-        'Expensive': 3
+var eutil = function(e, filter) {
+    this.costs = [
+        {
+            'id': 1,
+            'name': 'Free'
+        }, {
+            'id': 2,
+            'name': 'Cheap'
+        }, {
+            'id': 3,
+            'name': 'Expensive'
+        }
+    ]
+
+    var tmp = this[e];
+
+    if(filter) {
+        tmp = tmp.filter(function(obj) {
+            for(var f in filter) {
+                return filter.hasOwnProperty(f) && obj.hasOwnProperty(f) && filter[f] == obj[f];
+            }
+        })
     }
+    return tmp || [];
 }

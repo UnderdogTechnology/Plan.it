@@ -21,10 +21,14 @@ system.cmp.alert = {
     },
     view: function(ctrl, args) {
             var alert = ctrl.alert();
-            
-            if(alert && ctrl.lastAlert() != alert.message) {
+            console.log(alert);
+            if(alert && !alert.cb && ctrl.lastAlert() != alert.message) {
                 ctrl.hideAlert();
             }
+            if(alert) {
+                alert.options = alert.options && alert.options.length ? alert.options : ['Yes', 'No'];
+            }
+
             return m('div.alert', {
                 class: (!alert ? 'alert-hidden' : 'alert-'.concat(alert.type)),
                 onclick: ctrl.clearAlert
@@ -34,9 +38,11 @@ system.cmp.alert = {
                         hidden: !(alert && alert.cb)
                 }, [
                     m('div.right.btn.primary', {
-                            onclick: alert ? alert.cb : null
-                    }, 'Yes'),
-                    m('div.btn.secondary', 'No')
+                            onclick: alert && alert.cb ? alert.cb[0] : null
+                    }, alert ? alert.options[0] : null),
+                    m('div.btn.secondary', {
+                            onclick: alert && alert.cb && alert.cb.length > 1 ? alert.cb[1] : null
+                    }, alert ? alert.options[1] : null)
             ])
         ]);
     }

@@ -6,7 +6,7 @@
     
     var deps = {
         // MODELS
-        'models/': ['categories', 'themes', 'settings'],
+        'models/': ['categories', 'themes', 'settings', 'activities', 'x'],
         // COMPONENTS
         'components/': ['home', 'alert', 'find', 'results', 'edit', 'settings']
     };
@@ -18,8 +18,7 @@
 
                 var settings = system.model.settings.get();
 
-                var themes = system.model.themes.get();
-                system.loadTheme(settings.theme, themes[settings.theme]);
+                system.loadTheme(settings.theme);
 
                 return {settings: settings};
             },

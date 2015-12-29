@@ -1,42 +1,68 @@
 system.cmp.edit = {
     controller: function(args) {
+        var model = args.model;
         var ctrl = {
-            model: args.model || system.model.categories,
-            selectedCategory: args.selectedCategory || m.prop('Master'),
+            model: model,
             alert: args.alert || m.prop(),
-            allowEdit: args.allowEdit || m.prop(false),
-            categories: args.categories || m.prop(model.get(false)),
-            form: args.form || m.prop({
-                name: m.prop(null),
-                cost: m.prop(null),
-                players: {
-                    min: m.prop(null),
-                    max: m.prop(null)
-                }
-            }),
-            submitActivity: function(e) {
+            visibility: args.visibility,
+            categories: args.categories || m.prop(model.get()),
+            form: args.form,
+            submitActivity: function(e, i) {
                 e.preventDefault();
-                ctrl.alert(null);
 
                 var form = ctrl.form();
 
-                if(form.name() && ctrl.selectedCategory() && form.cost() && form.players.min() && form.players.max()) {
-                    ctrl.model.update(form, [ctrl.selectedCategory(), form.name()].join('.'));
-                    ctrl.categories(ctrl.model.get(false));
-                    ctrl.form({
-                        name: m.prop(null),
-                        cost: m.prop(1),
-                        players: {
-                            min: m.prop(null),
-                            max: m.prop(null)
-                        }
+                if(form.name() && form.category() && form.cost() && form.players.min() && form.players.max()) {
+                    var catId = form.category();
+                    if(isNaN(catId)) {
+                            var tmp = model.c.get({name:form.category()});
+                            if(tmp.length) {
+                                    catId = tmp[0].id;
+                            } else {
+                                    catId = model.c.upsert({name:form.category()});
+                            }
+                    } else {
+                            var tmp = model.c.get({id: catId});
+                            if(tmp.length) {
+                                    catId = tmp[0].id;
+                            } else {
+                                    catId = model.c.upsert({name:form.category()});
+                            }
+                    }
+                    var actId = model.a.upsert({
+                            category_id: catId,
+                            in_master: form.inMaster(),
+                            id: form.id(),
+                            name: form.name(),
+                            cost: form.cost(),
+                            players: {
+                                    min: form.players.min(),
+                                    max: form.players.max()
+                            }
                     });
-                    ctrl.alert({
-                        message: 'Activity successfully added',
-                        type: 'success'
-                    });
-                }
-                else {
+
+                    if(actId) {
+                            if(actId == i) {
+                                    ctrl.alert({
+                                        message: 'Activity successfully updated',
+                                        type: 'success'
+                                    });
+                            } else {
+                                    ctrl.alert({
+                                        message: 'Activity successfully added',
+                                        type: 'success'
+                                    });
+                            }
+                            ctrl.categories(model.c.get({},{'id': -1, 'name': 'Add New'}));
+                            form.category(catId);
+                    } else {
+                            ctrl.alert({
+                                message: 'Errm something went wrong',
+                                type: 'error'
+                            });
+                    }
+
+                } else {
                     ctrl.alert({
                         message: 'All fields must be populated',
                         type: 'warning'
@@ -45,35 +71,70 @@ system.cmp.edit = {
             },
             removeActivity: function(e) {
                 e.preventDefault();
-                ctrl.alert(null);
 
-                var form = ctrl.form();
-
-                if(ctrl.selectedCategory() && ctrl.selectedCategory() != 'Add New') {
+                var form = ctrl.form(),
+                    cat = model.c.get({id: form.category()})[0];
+                    console.log(cat);
+                if(form.category() && form.category().toString() != '-1' && (form.name() || cat && cat.name)) {
                     ctrl.alert({
-                            message: 'Are you sure you want to remove the ' + (form.name() ? 'activity' : 'category') + ' "' + (form.name() || ctrl.selectedCategory()) + '"?',
+                            message: 'Are you sure you want to remove the ' + (form.name() ? 'activity' : 'category') + ' "' + (form.name() || cat.name) + '"?',
                             type: 'warning',
-                            cb: function() {
-                                    ctrl.model.remove(form.name() ? [ctrl.selectedCategory(), form.name()].join('.') : ctrl.selectedCategory());
-                                    ctrl.categories(ctrl.model.get(false));
-                                    ctrl.categories()['Add New'] = {};
+                            cb: [function() {
+                                    var catId = form.category().toString(),
+                                        actId;
+                                    if(form.id()) {
+                                        actId = model.a.remove({
+                                            id: form.id()
+                                        });
+                                    }
+                                    else if(form.name() && form.cost() && form.players.min() && form.players.max()) {
+                                        
+                                        actId = model.a.remove({
+                                            in_master: form.inMaster(),
+                                            category_id: catId != '-1' ? catId : null,
+                                            name: form.name(),
+                                            cost: form.cost(),
+                                            players: {
+                                                    min: form.players.min(),
+                                                    max: form.players.max()
+                                            }
+                                        });
+                                    }
 
-                                    var selCat = Object.keys(ctrl.categories())[0];
-
-                                    ctrl.selectedCategory(selCat == 'Add New' ? '' : selCat);
+                                    if(catId != '-1') {
+                                        var tmp = model.a.get({category_id: catId});
+                                        if(!tmp.length) {
+                                                    model.c.remove({id:catId});
+                                        } else if(!(form.name() && form.cost() && form.players.min() && form.players.max())) {
+                                                    var actId = model.a.remove({category_id:catId});
+                                                    model.c.remove({id:catId});
+                                        }
+                                    }
+                                    
                                     ctrl.form({
+                                        id: m.prop(null),
+                                        category: m.prop(-1),
                                         name: m.prop(null),
                                         cost: m.prop(1),
+                                        inMaster: m.prop(true),
                                         players: {
                                             min: m.prop(null),
                                             max: m.prop(null)
                                         }
                                     });
-                                    ctrl.alert({
-                                        message: 'Activity successfully removed',
-                                        type: 'success'
-                                    });
-                          }
+                                    if(actId) {
+                                            ctrl.categories(model.c.get({},{'id': -1, 'name': 'Add New'}));
+                                            ctrl.alert({
+                                                message: 'Activity successfully removed',
+                                                type: 'success'
+                                            });
+                                    } else {
+                                            ctrl.alert({
+                                                message: 'Errm something went wrong',
+                                                type: 'error'
+                                            });
+                                    }
+                          }]
                     })
                 }
                 else {
@@ -89,18 +150,29 @@ system.cmp.edit = {
     },
     view: function(ctrl, args) {
         var form = ctrl.form();
-
         return m('div.edit', [
         m('form.center-form.pure-form.pure-form-aligned', [
                 m('div', {
-                    hidden: !ctrl.allowEdit()
+                    hidden: !ctrl.visibility.allowEdit()
                 }, [
+                    mutil.formGroup(mutil.createSwitch(['ON', 'EDIT'], form.inMaster(), 'In Master', function(evt){
+                            form.inMaster(evt.target.checked)
+                    })),
                     mutil.formGroup([
                         m('label', 'Category Name'),
                         m('input[type="text"].form-control', {
                             placeholder: 'Category Name',
-                            value: ctrl.selectedCategory() == 'Add New' ? '' : ctrl.selectedCategory(),
-                            onchange: m.withAttr('value', ctrl.selectedCategory)
+                            value: (function() {
+                                    var cat = ctrl.model.c.get({'id':form.category()});
+                                    if(form.category().toString() == -1) {
+                                            return '';
+                                    } else if(cat.length) {
+                                            return cat[0].name;
+                                    } else {
+                                            return form.category(); 
+                                    }
+                            })(),
+                            onchange: m.withAttr('value', form.category)
                         })
                     ]),
                     mutil.formGroup([
@@ -114,12 +186,12 @@ system.cmp.edit = {
                     mutil.formGroup([
                         m('label', 'Cost'),
                         m('select.form-control', {
-                            value: form.cost(),
                             onchange: m.withAttr('value', form.cost)
-                        }, util.forEach(eutil.costs, function(val, key){
+                        }, eutil('costs').map(function(cost){
                             return m('option', {
-                                value: val
-                            }, key)
+                                value: cost.id,
+                                selected: cost.id == form.cost()
+                            }, cost.name)
                         }))
                     ]),
                     mutil.formGroup([
@@ -143,7 +215,23 @@ system.cmp.edit = {
                             onclick: ctrl.removeActivity
                         }, 'Remove'),
                         m('button.pure-button.btn.primary', {
-                            onclick: ctrl.submitActivity
+                            onclick: function(evt) {
+                                if(form.id()) {
+                                    ctrl.alert({
+                                        message: 'Update or create new?',
+                                        type: 'warning',
+                                        cb: [function() {
+                                                ctrl.submitActivity(evt, form.id());
+                                        }, function() {
+                                                form.id(null);
+                                                ctrl.submitActivity(evt);
+                                        }],
+                                        options: ['Update', 'New']
+                                    });
+                                } else {
+                                        ctrl.submitActivity(evt);
+                                }
+                            }
                         }, 'Submit')
                     ])
                 ])

@@ -14,7 +14,7 @@ system.model.settings = {
         util.storage.remove('settings', path);
     },
     default: {
-        setdefault: 'false',
+        defaulted: {},
         pagesize: 5,
         pageturner: ['<', null, '>'],
         theme: 'default'

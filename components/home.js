@@ -1,18 +1,22 @@
 system.cmp.home = {
         controller: function(args) {
-                var model = system.model.categories;
-
+                var model = {
+                        c: system.model.categories(),
+                        a: system.model.activities()
+                };
                 var ctrl = {
                         model: model,
-                        categories: m.prop(model.get(true)),
-                        selectedCategory: args.selectedCategory || m.prop('Master'),
-                        selectedResult: m.prop(),
-                        resultSet: m.prop(),
+                        categories: m.prop(model.c.get({},{'id': -1, 'name': 'Master'})),
+                        selected: m.prop({}),
                         alert: m.prop(),
-                        allowEdit: m.prop(false),
-                        allowFind: m.prop(true),
-                        allowFilter: m.prop(false),
+                        visibility: {
+                                allowEdit: m.prop(false),
+                                allowFind: m.prop(true),
+                                allowFilter: m.prop(false)
+                        },
                         form: m.prop({
+                                category: m.prop(-1),
+                                inMaster: m.prop(true),
                                 name: m.prop(null),
                                 cost: m.prop(null),
                                 players: {
@@ -21,18 +25,30 @@ system.cmp.home = {
                                 }
                         }),
                         switchMode: function(evt) {
-                                ctrl.allowFind(evt.target.checked);
-                                ctrl.allowEdit(!evt.target.checked);
-
-                                if(ctrl.allowEdit() && ctrl.selectedResult()) {
-                                        ctrl.form(ctrl.selectedResult().activity);
-                                        ctrl.selectedCategory(ctrl.selectedResult().category);
-                                        ctrl.selectedResult(null);
+                                ctrl.visibility.allowFind(evt.target.checked);
+                                ctrl.visibility.allowEdit(!evt.target.checked);
+                                if(ctrl.visibility.allowEdit() && Object.keys(ctrl.selected()).length) {
+                                        var act = model.a.get({id: ctrl.selected()['id']})[0];
+                                        ctrl.form({
+                                                id: m.prop(act.id),
+                                                inMaster: m.prop(ctrl.selected()['in_master']),
+                                                category: m.prop(ctrl.selected()['category_id']),
+                                                name: m.prop(act.name),
+                                                cost: m.prop(act.cost),
+                                                players: {
+                                                        min: m.prop(act.players.min),
+                                                        max: m.prop(act.players.max)
+                                                }
+                                        });
+                                        ctrl.selected({});
                                 }
                                 else {
                                         ctrl.form({
+                                                id: m.prop(null),
+                                                inMaster: m.prop(true),
+                                                category: m.prop(-1),
                                                 name: m.prop(null),
-                                                cost: m.prop(!ctrl.allowFind() || ctrl.allowFilter()  ? 1 : null),
+                                                cost: m.prop(!ctrl.visibility.allowFind() || ctrl.visibility.allowFilter()  ? 1 : null),
                                                 players: {
                                                         min: m.prop(null),
                                                         max: m.prop(null)
@@ -40,42 +56,31 @@ system.cmp.home = {
                                         });
                                 }
 
-                                ctrl.alert(null);
-                                ctrl.categories(ctrl.model.get(evt.target.checked));
-
-                                if(!evt.target.checked) {
-                                        ctrl.categories()['Add New'] = {};
-
-                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Master' || ! ctrl.selectedCategory() ? 'Add New' : ctrl.selectedCategory());
-                                }
-                                else {
-                                        ctrl.selectedCategory(ctrl.selectedCategory() == 'Add New' || ! ctrl.selectedCategory()  ? 'Master' : ctrl.selectedCategory());
-                                }
-
+                                ctrl.categories(model.c.get({},{'id': -1, 'name': (evt.target.checked ? 'Master' : 'Add New')}));
                         }
                 };
                 return ctrl;
         },
     view: function(ctrl, args) {
+        var form = ctrl.form();
+        
         return m('div.home', [
                 m('form.center-form.pure-form.pure-form-aligned', [
                         mutil.formGroup([
                                 m('label', 'Category'),
                                 m('select.form-control', {
-                                    onchange: function(evt) {
-                                         ctrl.selectedCategory(evt.target.value != 'Add New' ? evt.target.value : '');
-                                    }
-                                }, util.forEach(ctrl.categories(), function(val, key) {
+                                    onchange: m.withAttr('value', form.category)
+                                }, ctrl.categories().map(function(val, key) {
                                     return m('option', {
-                                        selected: key == ctrl.selectedCategory()
-                                    }, key);
+                                        value: val.id,
+                                        selected: val.id == form.category()
+                                    }, val.name);
                                 }))
                         ]),
-                        mutil.formGroup(mutil.createSwitch(['FIND', 'EDIT'], ctrl.allowFind(), 'Mode', ctrl.switchMode))
+                        mutil.formGroup(mutil.createSwitch(['FIND', 'EDIT'], ctrl.visibility.allowFind(), 'Mode', ctrl.switchMode))
                 ]),
                 m.component(system.cmp.edit, {
-                        allowEdit: ctrl.allowEdit,
-                        selectedCategory: ctrl.selectedCategory,
+                        visibility: ctrl.visibility,
                         model: ctrl.model,
                         form: ctrl.form,
                         categories: ctrl.categories,
@@ -83,11 +88,8 @@ system.cmp.home = {
                         settings: args.settings
                 }),
                 m.component(system.cmp.find, {
-                        allowFind: ctrl.allowFind,
-                        allowFilter: ctrl.allowFilter,
-                        resultSet: ctrl.resultSet,
-                        selectedCategory: ctrl.selectedCategory,
-                        selectedResult: ctrl.selectedResult,
+                        visibility: ctrl.visibility,
+                        selected: ctrl.selected,
                         model: ctrl.model,
                         form: ctrl.form,
                         alert: ctrl.alert,
