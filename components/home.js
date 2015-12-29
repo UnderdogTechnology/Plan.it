@@ -7,6 +7,7 @@ system.cmp.home = {
                 var ctrl = {
                         model: model,
                         categories: m.prop(model.c.get({},{'id': -1, 'name': 'Master'})),
+                        resultSet: m.prop({}),
                         selected: m.prop({}),
                         alert: m.prop(),
                         visibility: {
@@ -56,6 +57,11 @@ system.cmp.home = {
                                         });
                                 }
 
+                                if(ctrl.visibility.allowFind()) {
+                                        ctrl.resultSet({});
+                                        //todo: requery?
+                                }
+
                                 ctrl.categories(model.c.get({},{'id': -1, 'name': (evt.target.checked ? 'Master' : 'Add New')}));
                         }
                 };
@@ -89,6 +95,7 @@ system.cmp.home = {
                 }),
                 m.component(system.cmp.find, {
                         visibility: ctrl.visibility,
+                        resultSet: ctrl.resultSet,
                         selected: ctrl.selected,
                         model: ctrl.model,
                         form: ctrl.form,

@@ -1,11 +1,18 @@
 system.cmp.alert = {
     controller: function(args) {
             ctrl = {
-                alert: args.alert || m.prop(null),
+                alert: args.alert,
                 lastAlert: m.prop(),
-                clearAlert: function() {
-                    ctrl.alert(null);
-                    ctrl.lastAlert(null);
+                clearAlert: function(e) {
+                    if(e) {
+                        if(!e.target.className.match('btn')) {
+                            ctrl.alert(null);
+                            ctrl.lastAlert(null);
+                        }
+                    } else {
+                        ctrl.alert(null);
+                        ctrl.lastAlert(null);
+                    } 
                 },
                 timeout: m.prop(),
                 hideAlert: function() {
@@ -21,7 +28,6 @@ system.cmp.alert = {
     },
     view: function(ctrl, args) {
             var alert = ctrl.alert();
-            console.log(alert);
             if(alert && !alert.cb && ctrl.lastAlert() != alert.message) {
                 ctrl.hideAlert();
             }

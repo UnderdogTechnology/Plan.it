@@ -3,9 +3,9 @@ system.cmp.find = {
             var model = args.model;
         var ctrl = {
             model: model,
-            selected: args.selected || m.prop({}),
+            selected: args.selected,
             visibility: args.visibility,
-            resultSet: m.prop(),
+            resultSet: args.resultSet,
             alert: args.alert || m.prop(),
             resetForm: args.resetForm,
             form: args.form,

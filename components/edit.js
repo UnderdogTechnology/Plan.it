@@ -3,9 +3,9 @@ system.cmp.edit = {
         var model = args.model;
         var ctrl = {
             model: model,
-            alert: args.alert || m.prop(),
+            alert: args.alert,
             visibility: args.visibility,
-            categories: args.categories || m.prop(model.get()),
+            categories: args.categories,
             form: args.form,
             submitActivity: function(e, i) {
                 e.preventDefault();
@@ -75,7 +75,6 @@ system.cmp.edit = {
 
                 var form = ctrl.form(),
                     cat = model.c.get({id: form.category()})[0];
-                    console.log(cat);
                 if(form.category() && form.category().toString() != '-1' && (form.name() || cat && cat.name)) {
                     ctrl.alert({
                             message: 'Are you sure you want to remove the ' + (form.name() ? 'activity' : 'category') + ' "' + (form.name() || cat.name) + '"?',
