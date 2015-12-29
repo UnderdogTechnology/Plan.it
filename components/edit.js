@@ -14,6 +14,7 @@ system.cmp.edit = {
 
                 if(form.name() && form.category() && form.cost() && form.players.min() && form.players.max()) {
                     var catId = form.category();
+
                     if(isNaN(catId)) {
                             var tmp = model.c.get({name:form.category()});
                             if(tmp.length) {
@@ -211,10 +212,10 @@ system.cmp.edit = {
                         })
                     ]),
                     mutil.formControls([
-                        m('button.pure-button.btn.secondary', {
+                        m('a.pure-button.btn.secondary', {
                             onclick: ctrl.removeActivity
                         }, 'Remove'),
-                        m('button.pure-button.btn.primary', {
+                        m('a.pure-button.btn.primary', {
                             onclick: function(evt) {
                                 if(form.id()) {
                                     ctrl.alert({
