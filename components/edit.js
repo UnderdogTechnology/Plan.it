@@ -155,7 +155,7 @@ system.cmp.edit = {
                 m('div', {
                     hidden: !ctrl.visibility.allowEdit()
                 }, [
-                    mutil.formGroup(mutil.createSwitch(['ON', 'EDIT'], form.inMaster(), 'In Master', function(evt){
+                    mutil.formGroup(mutil.createSwitch(['On', 'Edit'], form.inMaster(), 'In Master', function(evt){
                             form.inMaster(evt.target.checked)
                     })),
                     mutil.formGroup([

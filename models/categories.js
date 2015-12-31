@@ -42,7 +42,7 @@ system.model.categories = function() {
         },
         default: function() {
             var categories = util.storage.get('categories');
-            if(!Object.keys(categories).length && !system.model.settings.get().defaulted['categories']) {
+            if(categories.length && !system.model.settings.get().defaulted['categories']) {
                 categories = [
                     {'id': 1, 'name': 'Video Games'}, 
                     {'id': 2, 'name': 'Film'},

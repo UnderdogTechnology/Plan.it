@@ -13,7 +13,7 @@ system.cmp.results = {
             createPageturners: function() {
                 var curPage = ctrl.curPage(),
                     pageturners = ctrl.pageturners(),
-                    lastPage = ctrl.resultSet() ? Math.ceil(Object.keys(ctrl.resultSet()).length / ctrl.pageSize() - 1):0;
+                    lastPage = ctrl.resultSet() ? Math.ceil(ctrl.resultSet().length / ctrl.pageSize() - 1):0;
 
                  if(typeof pageturners == 'object') {
                     return pageturners.map(function(text){
@@ -97,10 +97,16 @@ system.cmp.results = {
         return ctrl;
     },
     view: function(ctrl, args) {
-        return m('div.results', {
-            hidden: !(ctrl.resultSet() && Object.keys(ctrl.resultSet()).length)
-        }, [
-            m('table.pure-table.pure-table-horizontal', [
+        if(ctrl.resultSet() == 'loading') {
+                //return m('div', 'Loading...');
+                return m('img.loading', {
+                        src: './images/loading.gif'
+                });
+        }
+        return m('div.results', [
+            m('table.pure-table.pure-table-horizontal',{
+                    hidden: !(ctrl.resultSet() && ctrl.resultSet().length)
+                }, [
                 m('thead.primary',
                     m('tr', [
                         m('td', 'Name'),
@@ -125,7 +131,7 @@ system.cmp.results = {
                 }))
             ]),
             m('table.pagination', {
-                hidden: !(ctrl.pageSize() > 0 && ctrl.resultSet() && Object.keys(ctrl.resultSet()).length > ctrl.pageSize())
+                hidden: !(ctrl.pageSize() > 0 && ctrl.resultSet() && ctrl.resultSet().length > ctrl.pageSize())
             }, [
                 m('tr', ctrl.createPageturners())
             ])

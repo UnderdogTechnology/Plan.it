@@ -100,17 +100,6 @@ var util = {
             obj: obj
         };
     },
-    remove2: function(obj, path, index) {
-        index = index || 0;
-        path = (typeof path) == 'string' ? path.split('.') : path;
-
-        if(!path || index == path.length - 1) {
-            delete obj[path[index]];
-            return obj;
-        }
-        obj[path[index]] = this.remove(obj[path[index]], path, ++index);
-        return obj;
-    },
     extend: function(aObj, bObj) {
         if(Array.isArray(aObj) && !Array.isArray(bObj)) {
                 aObj.push(bObj);
@@ -192,9 +181,6 @@ var util = {
             var status = util.remove(this.get(name), obj);
             this.create(name, status.arr);
             return status.obj;
-        },
-        remove2: function(name, path) {
-            this.create(name, util.remove(this.get(name), path));
         }
     },
     formatter: function(string, obj) {
@@ -272,7 +258,7 @@ var eutil = function(e, filter) {
             'name': 'Cheap'
         }, {
             'id': 3,
-            'name': 'Expensive'
+            'name': 'Pricey'
         }
     ]
 

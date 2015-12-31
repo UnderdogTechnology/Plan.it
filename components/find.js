@@ -10,8 +10,26 @@ system.cmp.find = {
             resetForm: args.resetForm,
             form: args.form,
             curPage: m.prop(0),
-            findAll: function(e) {
-                    e.preventDefault();
+            loading: {
+                    timeout: m.prop(),
+                    done: m.prop(false),
+                    start: function(list) {
+                        ctrl.resultSet('loading');
+                        clearTimeout(ctrl.loading.timeout());
+                        ctrl.loading.timeout(setTimeout(function() {
+                                if(!list.length) {
+                                     ctrl.alert({
+                                            message: 'No activites found',
+                                            type: 'info'
+                                      });
+                                }
+                                ctrl.resultSet(list);
+                                m.redraw();
+                        }, 500));
+                        ctrl.loading.done(true);
+                    }
+            },
+            find: function(e, cb) {
                     ctrl.alert(null);
                     ctrl.curPage(0);
 
@@ -39,64 +57,18 @@ system.cmp.find = {
                                     }
                             });
                     }
-                    if(fList.length) {
-                        ctrl.resultSet(fList);
-                    }
-                    else {
-                        ctrl.resultSet({});
-                        ctrl.alert({
-                                message: 'No activites found',
-                                type: 'info'
-                            });
-                    }
+                    ctrl.loading.start(cb ? cb(fList) : fList);
                     ctrl.selected({});
-                },
+            },
             findRandom: function(e) {
-                    e.preventDefault();
-                    ctrl.alert(null);
-                    ctrl.curPage(0);
-
-                    var form = ctrl.form();
-
-                    var fList;
-                    if (form.category().toString() == '-1') {
-                            fList = model.a.get({'in_master': 'true'});
-                    } else {
-                            fList = model.a.get({
-                                    'category_id': form.category().toString(),
-                                    'name': form.name(),
-                                    'cost': form.cost(),
-                                    'players': {
-                                            'min': form.players.min(),
-                                            'max': form.players.max()
-                                    }
+                    ctrl.find(e, function(l) {
+                            return util.random(l, function(activity) {
+                                 if(activity) {
+                                    return [activity];
+                                 }
+                                 return [];
                             });
-                    }
-
-                    if(fList.length) {
-                        ctrl.resultSet(util.random(fList, function(activity, name) {
-                            if(name && activity) {
-                                var o = {};
-                                o[name] = activity;
-                                return o;
-                            }
-                            else {
-                                ctrl.alert({
-                                    message: 'No activites found',
-                                    type: 'info'
-                                });
-                                return {};
-                            }
-                        }));
-                    }
-                    else {
-                        ctrl.resultSet({});
-                        ctrl.alert({
-                            message: 'No activites found',
-                            type: 'info'
-                        });
-                    }
-                    ctrl.selected({});
+                    });
                 }
         };
         return ctrl;
@@ -108,7 +80,7 @@ system.cmp.find = {
             hidden: !ctrl.visibility.allowFind()
         }, [
             m('form.center-form.pure-form.pure-form-aligned', [
-                mutil.formGroup(mutil.createSwitch(['ON', 'OFF'], ctrl.visibility.allowFilter(), 'Filter', function(evt) {
+                mutil.formGroup(mutil.createSwitch(['On', 'Off'], ctrl.visibility.allowFilter(), 'Filter', function(evt) {
                     ctrl.visibility.allowFilter(evt.target.checked);
                     ctrl.form({
                         id: m.prop(null),
@@ -163,7 +135,7 @@ system.cmp.find = {
                 ]),
                 mutil.formControls([
                     m('a.pure-button.btn.secondary', {
-                        onclick: ctrl.findAll
+                        onclick: ctrl.find
                     }, 'Find All'),
                     m('a.pure-button.btn.primary', {
                         onclick: ctrl.findRandom

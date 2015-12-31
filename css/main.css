@@ -65,18 +65,16 @@ body {
     overflow: hidden;
     color: #fff;
     width: 150px !important;
-    -webkit-transition: left .5s, left .5s, -webkit-transform .5s;
-    transition: left .5s, left .5s, transform .5ss;
+    -webkit-transition: left 400ms, left 400ms, -webkit-transform 400ms;
+    transition: left 400ms, left 400ms, transform 400ms;
 }
 
 .tgl .tgl-btn div {
     height: 25px;
-    width: 55px;
+    width: 57px;
     line-height: 25px;
     text-align: center;
     float: left;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
 }
 
 .tgl .tgl-btn .tgl-opt.primary,
@@ -85,6 +83,8 @@ body {
 }
 
 .tgl .tgl-btn .separator {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
     width: 10px;
     background: #fff;
 }
@@ -152,8 +152,11 @@ body {
 /****************
 *    RESULTS    *
 *****************/
-.results > table {
+.results {
     margin-top:5%;
+}
+
+.results table{
     width: 100%;
 }
 
@@ -161,16 +164,18 @@ body {
     border: 1px solid;
 }
 
-.result-row td,
-.results > table thead td{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; 
+.result-row {
+    -webkit-transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+    transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
 }
 
 .result-row td:nth-child(1),
 .results > table thead td:nth-child(1) {
-    width: 40%;
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60%;
 }
 .result-row td:nth-child(2),
 .results > table thead td:nth-child(2) {
@@ -179,12 +184,12 @@ body {
 .result-row td:nth-child(3),
 .results > table thead td:nth-child(3) {
     text-align:center;
-    width: 10%;
+    width: 5%;
 }
 .result-row td:nth-child(4),
 .results > table thead td:nth-child(4) {
     text-align:center;
-    width: 10%;
+    width: 5%;
 }
 
 .pagination {
@@ -207,6 +212,14 @@ body {
 /****************
 *     COMMON    *
 *****************/
+
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+.loading{
+    animation:spin 800ms linear infinite;
+    width:150px;
+    margin:0 auto;
+    display:block;
+}
 
 .home {
     max-width: 500px;

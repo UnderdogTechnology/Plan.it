@@ -2,7 +2,7 @@ system.model.activities = function() {
         var _ = {
         get: function(filter) {
                 var activities = this.default();
-                if (filter && Object.keys(filter).length){
+                if (Object.keys(filter || {}).length){
                     activities = activities.filter(function(act){
                         var match = true;
                         if(match && filter.id && !(filter.id.toString() == act.id.toString())) {

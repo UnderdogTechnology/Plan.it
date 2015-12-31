@@ -7,7 +7,7 @@ system.cmp.home = {
                 var ctrl = {
                         model: model,
                         categories: m.prop(model.c.get({},{'id': -1, 'name': 'Master'})),
-                        resultSet: m.prop({}),
+                        resultSet: m.prop([]),
                         selected: m.prop({}),
                         alert: m.prop(),
                         visibility: {
@@ -58,7 +58,7 @@ system.cmp.home = {
                                 }
 
                                 if(ctrl.visibility.allowFind()) {
-                                        ctrl.resultSet({});
+                                        ctrl.resultSet([]);
                                         //todo: requery?
                                 }
 
@@ -83,7 +83,7 @@ system.cmp.home = {
                                     }, val.name);
                                 }))
                         ]),
-                        mutil.formGroup(mutil.createSwitch(['FIND', 'EDIT'], ctrl.visibility.allowFind(), 'Mode', ctrl.switchMode))
+                        mutil.formGroup(mutil.createSwitch(['Find', 'Edit'], ctrl.visibility.allowFind(), 'Mode', ctrl.switchMode))
                 ]),
                 m.component(system.cmp.edit, {
                         visibility: ctrl.visibility,
