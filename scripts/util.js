@@ -22,9 +22,12 @@ var util = {
         return tmp.length ? tmp.pop() + 1 : 1;
     },
     upsert: function(arr, obj) {
-        if(!arr.length || !obj.id) {
+        if(!arr.length) {
             obj.id = this.oneup(arr, 'id');
             arr.push(obj);
+        }
+        if(!obj.id) {
+            obj.id = this.oneup(arr, 'id');
         }
         else {
             arr = arr.map(function(o) {
@@ -43,6 +46,7 @@ var util = {
                         }
                     }
                 }
+                console.log(comply, total);
                 if(!obj.id && comply && total && comply == total) {
                     obj.id = o.id;
                 }
