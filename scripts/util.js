@@ -22,12 +22,9 @@ var util = {
         return tmp.length ? tmp.pop() + 1 : 1;
     },
     upsert: function(arr, obj) {
-        if(!arr.length) {
+        if(!arr.length || !obj.id) {
             obj.id = this.oneup(arr, 'id');
             arr.push(obj);
-        }
-        if(!obj.id) {
-            obj.id = this.oneup(arr, 'id');
         }
         else {
             arr = arr.map(function(o) {
@@ -36,11 +33,11 @@ var util = {
                     identifiers = [],
                     tmp = util.extend({}, o);
                 for(var f in obj) {
-                    if(obj.hasOwnProperty(f) && o.hasOwnProperty(f)) {
+                    if(obj.hasOwnProperty(f)) {
                         if((obj[f] || obj[f] === false) && f != 'id') {
                             ++total;
                             tmp[f] = obj[f];
-                            if((obj[f]).toString() == (o[f]).toString()) {
+                            if((o[f] || o[f] === false) && (obj[f]).toString() == (o[f]).toString()) {
                                 ++comply;
                             }
                         }
