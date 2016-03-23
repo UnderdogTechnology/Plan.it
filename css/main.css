@@ -221,7 +221,7 @@ body {
     display:block;
 }
 
-.home {
+.home,.settings {
     max-width: 500px;
     padding: .7em;
     margin: 0 auto;

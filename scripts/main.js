@@ -16,7 +16,7 @@
             controller: function(args) {
                 document.title = title;
 
-                var settings = system.model.settings.get();
+                var settings = system.model.settings().get();
 
                 system.loadTheme(settings.theme);
 

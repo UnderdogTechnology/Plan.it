@@ -9,7 +9,7 @@
         document.head.appendChild(script);
     };
 
-    system.loadModules = function(deps, done) {
+    system.loadModules = function(deps, done) { 
 
         var dir;
         var loaded = 0;
@@ -33,14 +33,17 @@
     };
 
     system.loadTheme = function(name, theme) {
-        var theme = system.model.themes.get()[name];
-        var link = document.createElement('link');
-        link.rel = "stylesheet";
-        link.href = './themes/'+ name + '/' + theme.css + '.css';
-        document.head.appendChild(link);
+        var theme = system.model.themes().get({'name':name});
+        if(theme.length) {
+            theme = theme[0];
+            var link = document.createElement('link');
+            link.rel = "stylesheet";
+            link.href = './themes/'+ name + '/' + theme.css + '.css';
+            document.head.appendChild(link);
 
-        var script = document.createElement('script');
-        script.src = './themes/'+ name + '/' + theme.js + '.js';
-        document.head.appendChild(script);
+            var script = document.createElement('script');
+            script.src = './themes/'+ name + '/' + theme.js + '.js';
+            document.head.appendChild(script);
+        }
     }
 }());

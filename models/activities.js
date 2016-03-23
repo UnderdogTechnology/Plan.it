@@ -63,7 +63,7 @@ system.model.activities = function() {
             },
             default: function() {
                 var activities = util.storage.get('activities');
-                if(!activities.length && !system.model.settings.get().defaulted['activities']) {
+                if(!activities.length && !system.model.settings().get('defaulted')['activities']) {
                     activities = [
                         {
                             'in_master': true,
@@ -443,8 +443,6 @@ system.model.activities = function() {
                 return activities;
             }
         }
-
         _.get();
-
         return _;
 };
