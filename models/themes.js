@@ -7,6 +7,7 @@ system.model.themes = function() {
                     var match = true;
                     for(var f in filter) {
                         match = (filter.hasOwnProperty(f) && t.hasOwnProperty(f) && filter[f] == t[f]);
+                        if(!match) break;
                     }
                     return match;
                 });
