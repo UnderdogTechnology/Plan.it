@@ -1,3 +1,4 @@
+/* global system,util */
 system.model.themes = function() {
     var _ = {
         get: function(filter) {

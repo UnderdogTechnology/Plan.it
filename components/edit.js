@@ -1,3 +1,4 @@
+/* global system,m,mutil,eutil */
 system.cmp.edit = {
     controller: function(args) {
         var model = args.model;
@@ -14,16 +15,16 @@ system.cmp.edit = {
 
                 if(form.name() && form.category() && form.cost() && form.players.min() && form.players.max()) {
                     var catId = form.category();
-
+                    var tmp;
                     if(isNaN(catId)) {
-                            var tmp = model.c.get({name:form.category()});
+                            tmp = model.c.get({name:form.category()});
                             if(tmp.length) {
                                     catId = tmp[0].id;
                             } else {
                                     catId = model.c.upsert({name:form.category()});
                             }
                     } else {
-                            var tmp = model.c.get({id: catId});
+                            tmp = model.c.get({id: catId});
                             if(tmp.length) {
                                     catId = tmp[0].id;
                             } else {
@@ -106,7 +107,7 @@ system.cmp.edit = {
                                         if(!tmp.length) {
                                                     model.c.remove({id:catId});
                                         } else if(!(form.name() && form.cost() && form.players.min() && form.players.max())) {
-                                                    var actId = model.a.remove({category_id:catId});
+                                                    actId = model.a.remove({category_id:catId});
                                                     model.c.remove({id:catId});
                                         }
                                     }
@@ -135,7 +136,7 @@ system.cmp.edit = {
                                             });
                                     }
                           }]
-                    })
+                    });
                 }
                 else {
                     ctrl.alert({
@@ -156,7 +157,7 @@ system.cmp.edit = {
                     hidden: !ctrl.visibility.allowEdit()
                 }, [
                     mutil.formGroup(mutil.createSwitch(['On', 'Edit'], form.inMaster(), 'In Master', function(evt){
-                            form.inMaster(evt.target.checked)
+                            form.inMaster(evt.target.checked);
                     })),
                     mutil.formGroup([
                         m('label', 'Category Name'),
@@ -191,7 +192,7 @@ system.cmp.edit = {
                             return m('option', {
                                 value: cost.id,
                                 selected: cost.id == form.cost()
-                            }, cost.name)
+                            }, cost.name);
                         }))
                     ]),
                     mutil.formGroup([

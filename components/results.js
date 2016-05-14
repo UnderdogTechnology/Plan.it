@@ -1,3 +1,4 @@
+/* global system,util,m,eutil */
 system.cmp.results = {
     controller: function(args) {
         var settings = args.settings,
@@ -61,7 +62,7 @@ system.cmp.results = {
                                             ctrl.select();
                                             ctrl.curPage(i - 1);
                                         }
-                                    }, i)
+                                    }, i);
                                 }
                             });
                         }
@@ -74,7 +75,7 @@ system.cmp.results = {
                                 onclick: function() {
                                     ctrl.curPage(i - 1);
                                 }
-                            }, (i == lastPage + 1 && i != curPage + 1? '..' : '') + i + (i == 1 && i != curPage + 1 ? '..' : ''))
+                            }, (i == lastPage + 1 && i != curPage + 1? '..' : '') + i + (i == 1 && i != curPage + 1 ? '..' : ''));
                         }
                     });
                 } 
@@ -100,7 +101,7 @@ system.cmp.results = {
         if(ctrl.resultSet() == 'loading') {
                 //return m('div', 'Loading...');
                 return m('img.loading', {
-                        src: './images/loading.gif'
+                    src: './images/loading.gif'
                 });
         }
         return m('div.results', [

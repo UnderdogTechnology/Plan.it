@@ -1,3 +1,4 @@
+/* global system,util */
 system.model.activities = function() {
         var _ = {
         get: function(filter) {
@@ -442,7 +443,7 @@ system.model.activities = function() {
                 }
                 return activities;
             }
-        }
+        };
         _.get();
         return _;
 };

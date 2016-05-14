@@ -1,6 +1,7 @@
+/* global system,m */
 system.cmp.alert = {
     controller: function(args) {
-            ctrl = {
+            var ctrl = {
                 alert: args.alert,
                 lastAlert: m.prop(),
                 clearAlert: function(e) {

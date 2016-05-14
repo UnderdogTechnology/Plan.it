@@ -167,6 +167,7 @@ body {
 .result-row {
     -webkit-transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+    cursor: default;
 }
 
 .result-row td:nth-child(1),
@@ -217,8 +218,9 @@ body {
 .loading{
     animation:spin 800ms linear infinite;
     width:150px;
-    margin:0 auto;
-    display:block;
+    display: block;
+    margin: 0 auto;
+    clear: both;
 }
 
 .home,.settings {

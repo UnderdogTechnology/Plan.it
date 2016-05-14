@@ -1,3 +1,4 @@
+/* global system,m,mutil,localStorage,location */
 system.cmp.settings = {
     controller: function(args) {
             var mySettings = system.model.settings().get();
@@ -52,6 +53,6 @@ system.cmp.settings = {
                     }, 'Reset')
                 ])
             ])
-        ])
+        ]);
     }
 };

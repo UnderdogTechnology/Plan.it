@@ -1,3 +1,4 @@
+/* global m,localStorage */
 /**
  ** Generic Utilities
  **/
@@ -91,7 +92,7 @@ var util = {
                     }
                 }
                 if(comply && total && comply == total) {
-                    obj.id = o.id
+                    obj.id = o.id;
                 } 
                 return !(obj.id == o.id);
             });
@@ -261,7 +262,7 @@ var eutil = function(e, filter) {
             'id': 3,
             'name': 'Pricey'
         }
-    ]
+    ];
 
     var tmp = this[e];
 
@@ -270,7 +271,7 @@ var eutil = function(e, filter) {
             for(var f in filter) {
                 return filter.hasOwnProperty(f) && obj.hasOwnProperty(f) && filter[f] == obj[f];
             }
-        })
+        });
     }
     return tmp || [];
-}
+};

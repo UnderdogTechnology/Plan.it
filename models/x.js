@@ -1,3 +1,4 @@
+/* global system,util */
 system.model.x = function(mOne, mTwo) {
 
     var _ = {
@@ -31,7 +32,7 @@ system.model.x = function(mOne, mTwo) {
         default: function() {
             var x = [],
                 defaulted,
-                d = {};
+                d = {}, o;
             if((o = util.storage.get(mOne + '_' + mTwo)).length) {
                 x = o;
                 _.id = mOne + '_' + mTwo;
@@ -64,4 +65,4 @@ system.model.x = function(mOne, mTwo) {
     _.get();
     
     return _;
-}
+};

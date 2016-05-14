@@ -33,7 +33,7 @@
     };
 
     system.loadTheme = function(name, theme) {
-        var theme = system.model.themes().get({'name':name});
+        theme = system.model.themes().get({'name':name});
         if(theme.length) {
             theme = theme[0];
             var link = document.createElement('link');
@@ -45,5 +45,5 @@
             script.src = './themes/'+ name + '/' + theme.js + '.js';
             document.head.appendChild(script);
         }
-    }
+    };
 }());

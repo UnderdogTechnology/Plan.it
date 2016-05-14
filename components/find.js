@@ -1,3 +1,4 @@
+/* global system,util,m,mutil,eutil */
 system.cmp.find = {
     controller: function(args) {
             var model = args.model;
@@ -113,7 +114,7 @@ system.cmp.find = {
                         }, eutil('costs').map(function(cost){
                             return m('option', {
                                 value: cost.id
-                            }, cost.name)
+                            }, cost.name);
                         }))
                     ]),
                     mutil.formGroup([

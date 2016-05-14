@@ -1,3 +1,4 @@
+/* global system,util */
 system.model.categories = function() {
     var _ = {
         get: function(filter, primer) {
@@ -56,7 +57,7 @@ system.model.categories = function() {
             }
             return categories;
         }
-    }
+    };
     _.get();
     return _;
 };
