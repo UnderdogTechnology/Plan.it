@@ -101,7 +101,7 @@ system.cmp.results = {
         if(ctrl.resultSet() == 'loading') {
                 //return m('div', 'Loading...');
                 return m('img.loading', {
-                        src: './images/loading.gif'
+                    src: './images/loading.gif'
                 });
         }
         return m('div.results', [
