@@ -1,3 +1,4 @@
+/* global system,util */
 system.model.settings = function(){
     var _ = {
         get: function(label) {
@@ -24,7 +25,7 @@ system.model.settings = function(){
             }
             return settings;
         }
-    }
+    };
     _.get();
     return _;
 };

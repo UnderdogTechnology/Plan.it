@@ -1,3 +1,4 @@
+/* global util,m */
 (function() {
     var system = window.system = window.system || {};
 
