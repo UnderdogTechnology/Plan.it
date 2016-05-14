@@ -167,6 +167,7 @@ body {
 .result-row {
     -webkit-transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+    cursor: default;
 }
 
 .result-row td:nth-child(1),
